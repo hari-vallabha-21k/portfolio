@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "Hari Vallabha Portfolio.dc.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "support.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "hero-scene.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "music/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "uploads/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/$",
+      "dest": "/Hari Vallabha Portfolio.dc.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
