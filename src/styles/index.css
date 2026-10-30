@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Tailwind v4: class-based dark mode (.dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens carried over from the original page.
+   --ink is an "r, g, b" triplet so alpha can be applied: rgba(var(--ink), .5) */
+:root {
+  --accent: #c93a1a;
+  --paper: #f5f4f0;
+  --paper2: #e8e8e2;
+  --card: #ffffff;
+  --ink: 10, 10, 10;
+  --dot: rgba(191, 191, 184, 0.5);
+}
+
+.dark {
+  --paper: #141210;
+  --paper2: #100f0d;
+  --card: #1c1a16;
+  --ink: 245, 244, 240;
+  --dot: rgba(245, 244, 240, 0.07);
+}
+
+@theme inline {
+  --color-accent: var(--accent);
+  --color-paper: var(--paper);
+  --color-paper2: var(--paper2);
+  --color-card: var(--card);
+  --color-ink: rgb(var(--ink));
+  --color-dot: var(--dot);
+  --font-serif: "Cormorant Garamond", serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-jp: "Noto Serif JP", serif;
+  --ease-site: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--paper);
+  color: rgb(var(--ink));
+  overflow-x: hidden;
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease;
+}
+
+::selection {
+  background: rgb(var(--ink));
+  color: var(--paper);
+}
