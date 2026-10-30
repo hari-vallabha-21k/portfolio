@@ -15,14 +15,14 @@ export const SONGS: Song[] = [
     title: "REFLECTIONS",
     artist: "THE NEIGHBOURHOOD",
     genre: "ALT ROCK",
-    src: "music/The Neighbourhood - Reflections (Lyrics).mp3",
+    src: "/music/The Neighbourhood - Reflections (Lyrics).mp3",
   },
   {
     id: "starboy",
     title: "STARBOY",
     artist: "THE WEEKND FT. DAFT PUNK",
     genre: "SYNTH-POP",
-    src: "music/120._The_Weeknd_feat._Daft_Pu_-_Starboy_(mp3.pm).mp3",
+    src: "/music/120._The_Weeknd_feat._Daft_Pu_-_Starboy_(mp3.pm).mp3",
   },
 ];
 

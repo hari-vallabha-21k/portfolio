@@ -71,7 +71,7 @@
 
 /* Loader isn't ported yet (Phase 4): entrance animations use the "loader off" delay. */
 body {
-  --boot: 0.2s;
+  --boot: 2.45s;
 }
 
 @keyframes wordUp {
@@ -211,4 +211,46 @@ body {
     stroke-dashoffset: 0;
     transition: none;
   }
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes discSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nav-btn:hover,
+.nav-btn:focus-visible {
+  border-color: #f4874b !important;
+}
+.nav-btn:not([aria-label="Back to top"]):not([aria-label^="Accent"]):hover {
+  color: #f4874b !important;
+}
+.song-row:hover,
+.song-row:focus-visible {
+  background: rgba(244, 135, 75, 0.12) !important;
+}
+.close-btn:hover,
+.close-btn:focus-visible {
+  background: #f5f4f0 !important;
+  color: #0a0a0a !important;
+}
+dialog.project-dialog::backdrop {
+  background: transparent;
+}
+dialog.project-dialog {
+  overflow-y: auto;
+}
+
+/* Lock page scroll while any modal dialog is open */
+body:has(dialog[open]) {
+  overflow: hidden;
 }

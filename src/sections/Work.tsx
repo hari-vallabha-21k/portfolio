@@ -1,9 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import ProjectDialog from "../components/ProjectDialog";
 import { PROJECTS } from "../data/projects";
 import { s } from "../lib/css";
 
 export default function Work() {
   const projects = PROJECTS;
+  const [open, setOpen] = useState<number | null>(null);
   return (
     <section
       id="work"
@@ -43,10 +45,21 @@ export default function Work() {
           Click a row — case studies open in place
         </div>
       </div>
-      {projects.map((p) => (
+      {projects.map((p, pi) => (
         <Fragment key={p.code}>
+          {/* biome-ignore lint/a11y/useSemanticElements: the whole row is the click target; a <button> would break the grid layout */}
           <div
             data-reveal
+            role="button"
+            tabIndex={0}
+            aria-label={`Open case study: ${p.title}`}
+            onClick={() => setOpen(pi)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setOpen(pi);
+              }
+            }}
             style={s(
               "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,5vw,72px);align-items:center;padding:clamp(36px,6vh,60px) 0;border-top:1px solid rgba(var(--ink),.14);cursor:pointer",
             )}
@@ -134,6 +147,7 @@ export default function Work() {
           </div>
         </Fragment>
       ))}
+      <ProjectDialog index={open} onChange={setOpen} onClose={() => setOpen(null)} />
     </section>
   );
 }

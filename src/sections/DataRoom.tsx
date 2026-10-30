@@ -1,4 +1,5 @@
-import { SQL_TEXT } from "../data/misc";
+import CountUp from "../components/CountUp";
+import TypedSql from "../components/TypedSql";
 import { s } from "../lib/css";
 
 export default function DataRoom() {
@@ -64,9 +65,7 @@ export default function DataRoom() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:54px;line-height:1;color:#F4874B",
             )}
           >
-            <span data-count="62" data-prefix="−" data-suffix="%">
-              −62%
-            </span>
+            <CountUp to={62} prefix="−" suffix="%" />
           </div>
           <div
             style={s(
@@ -86,7 +85,7 @@ export default function DataRoom() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:54px;line-height:1",
             )}
           >
-            <span data-count="3">3</span>
+            <CountUp to={3} />
           </div>
           <div
             style={s(
@@ -106,9 +105,7 @@ export default function DataRoom() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:54px;line-height:1",
             )}
           >
-            <span data-count={"0.08"} data-dec="2">
-              0.08
-            </span>
+            <CountUp to={0.08} decimals={2} />
           </div>
           <div
             style={s(
@@ -128,7 +125,7 @@ export default function DataRoom() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:54px;line-height:1",
             )}
           >
-            <span data-count={"5"}>5</span>
+            <CountUp to={5} />
           </div>
           <div
             style={s(
@@ -294,13 +291,11 @@ export default function DataRoom() {
               AD-HOC — psql
             </span>
           </div>
-          <pre
+          <TypedSql
             style={s(
               "font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.75;color:rgba(245,244,240,.85);white-space:pre-wrap;min-height:250px;margin:0",
             )}
-          >
-            {SQL_TEXT}
-          </pre>
+          />
         </div>
       </div>
     </section>

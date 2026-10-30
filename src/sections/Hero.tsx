@@ -1,6 +1,36 @@
+import { Component, lazy, type ReactNode, Suspense, useState } from "react";
 import { s } from "../lib/css";
 
+// The 3D scene (three.js) is its own chunk and only loads when it is switched on.
+const HeroScene = lazy(() => import("../three/HeroScene"));
+
+/** Keeps a failed 3D chunk or WebGL error from taking the whole page down. */
+class Safe3d extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
+/** Off by default (the live site has no 3D hero). Preview it with ?hero3d in the URL. */
+function want3d(): boolean {
+  if (!new URLSearchParams(window.location.search).has("hero3d")) return false;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  try {
+    const c = document.createElement("canvas");
+    const gl = c.getContext("webgl2") ?? c.getContext("webgl");
+    gl?.getExtension("WEBGL_lose_context")?.loseContext(); // release the probe context
+    return !!gl;
+  } catch {
+    return false;
+  }
+}
+
 export default function Hero() {
+  const [show3d] = useState(want3d);
   return (
     <section
       id="hero"
@@ -9,6 +39,13 @@ export default function Hero() {
         "position:relative;min-height:100vh;background:var(--paper);background-image:radial-gradient(var(--dot) 1px, transparent 1px);background-size:24px 24px;color:rgba(var(--ink),1);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(96px,13vh,136px) clamp(16px,4vw,48px) clamp(76px,10vh,110px)",
       )}
     >
+      {show3d && (
+        <Safe3d>
+          <Suspense fallback={null}>
+            <HeroScene />
+          </Suspense>
+        </Safe3d>
+      )}
       <div
         style={s(
           "position:absolute;inset:0;background:radial-gradient(70% 55% at 78% 16%, rgba(244,135,75,.14), transparent 60%), radial-gradient(55% 45% at 10% 92%, rgba(201,58,26,.08), transparent 55%);pointer-events:none",

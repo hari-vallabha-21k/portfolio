@@ -1,17 +1,22 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { ANIME } from "../data/anime";
 import { s } from "../lib/css";
 
 export default function About() {
   const animeOn = true;
-  const animeCards = ANIME.map((a) => ({
-    kanji: a.kanji,
-    label: a.label,
-    rot: `rotate(${a.rot})`,
-    q: `“${a.quotes[0].q}”`,
-    w: `— ${a.quotes[0].w}`,
-    count: `QUOTE 1 / ${a.quotes.length}`,
-  }));
+  const [qi, setQi] = useState<number[]>(() => ANIME.map(() => 0));
+  const animeCards = ANIME.map((a, i) => {
+    const k = qi[i] % a.quotes.length;
+    return {
+      kanji: a.kanji,
+      label: a.label,
+      rot: `rotate(${a.rot})`,
+      q: `“${a.quotes[k].q}”`,
+      w: `— ${a.quotes[k].w}`,
+      count: `QUOTE ${k + 1} / ${a.quotes.length}`,
+      cycle: () => setQi((prev) => prev.map((v, j) => (j === i ? (v + 1) % a.quotes.length : v))),
+    };
+  });
   return (
     <section
       id="about"
@@ -175,7 +180,17 @@ export default function About() {
             </div>
             {animeCards.map((a) => (
               <Fragment key={a.label}>
+                {/* biome-ignore lint/a11y/useSemanticElements: a <button> would add default button styling to the card */}
                 <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={a.cycle}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      a.cycle();
+                    }
+                  }}
                   style={s(
                     `position:relative;flex:1 1 250px;max-width:340px;background:var(--card);border:1px solid rgba(var(--ink),.16);box-shadow:0 22px 44px -28px rgba(10,10,10,.4);padding:28px 22px 16px;cursor:pointer;transform:${a.rot};transition:transform .4s cubic-bezier(.22,.61,.36,1),box-shadow .4s,border-color .4s`,
                   )}

@@ -1,23 +1,33 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { GDOT, LBLS, RANKS, RCOL, SKILLS, TOPS } from "../data/skills";
 import { s } from "../lib/css";
 
 export default function Skills() {
-  const ax = (i: number) => ({
-    col: "rgba(245,244,240,.6)",
-    col2: "rgba(245,244,240,.32)",
-    dotR: 4,
-    dotFill: GDOT[i],
-  });
+  const [hi, setHi] = useState({ gi: -1, name: "", w: 0 });
+  const hover = (next: { gi: number; name: string; w: number }) =>
+    setHi((p) => (p.gi === next.gi && p.name === next.name ? p : next));
+  const clear = () => hover({ gi: -1, name: "", w: 0 });
+  const ax = (i: number) => {
+    const hot = hi.gi === i;
+    return {
+      col: hot ? "#F4874B" : "rgba(245,244,240,.6)",
+      col2: hot ? "rgba(244,135,75,.85)" : "rgba(245,244,240,.32)",
+      dotR: hot ? 6.5 : 4,
+      dotFill: hot ? "#F4874B" : GDOT[i],
+    };
+  };
   const [axFE, axBE, axDA, axOP, axTL] = [0, 1, 2, 3, 4].map(ax);
-  const hudCol = "rgba(245,244,240,.5)";
-  const radarHud = "HOVER A SKILL — THE CHART ANSWERS";
+  const hudCol = hi.name ? "#F4874B" : "rgba(245,244,240,.5)";
+  const radarHud = hi.name
+    ? `● ${hi.name.toUpperCase()} — ${LBLS[hi.gi]} · RANK ${RANKS[hi.w]}`
+    : "HOVER A SKILL — THE CHART ANSWERS";
   const rankGroups = LBLS.map((label, gi) => ({
     label,
+    gi,
     top: TOPS[gi],
     rows: SKILLS.filter((sk) => sk[1] === gi)
       .sort((a, b) => b[2] - a[2])
-      .map((sk) => ({ n: sk[0], r: RANKS[sk[2]], col: RCOL[RANKS[sk[2]]] })),
+      .map((sk) => ({ n: sk[0], w: sk[2], r: RANKS[sk[2]], col: RCOL[RANKS[sk[2]]] })),
   }));
   return (
     <section
@@ -335,7 +345,10 @@ export default function Skills() {
                   </div>
                   {g.rows.map((it) => (
                     <Fragment key={it.n}>
+                      {/* biome-ignore lint/a11y/noStaticElementInteractions: hover highlights a radar axis; the same information is in the visible text */}
                       <div
+                        onMouseEnter={() => hover({ gi: g.gi, name: it.n, w: it.w })}
+                        onMouseLeave={clear}
                         style={s(
                           "display:flex;align-items:baseline;gap:12px;padding:5px 2px;cursor:default;transition:background .25s",
                         )}

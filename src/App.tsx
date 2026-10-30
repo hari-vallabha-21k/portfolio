@@ -1,3 +1,4 @@
+import Loader from "./components/Loader";
 import Nav from "./components/Nav";
 import { useInView } from "./hooks/useInView";
 import About from "./sections/About";
@@ -13,6 +14,7 @@ export default function App() {
   useInView();
   return (
     <div className="relative bg-paper text-ink font-sans">
+      <Loader />
       <Nav />
       <main>
         <Hero />
