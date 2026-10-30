@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ACCENTS, SONGS } from "../data/misc";
+import { ACCENTS } from "../data/misc";
 import { useAudio } from "../hooks/useAudio";
 import { useScrollState } from "../hooks/useScrollState";
 import { useTheme } from "../hooks/useTheme";
@@ -14,12 +14,11 @@ const ACCENT_NAMES: Record<string, string> = {
 const LINKS = ["about", "skills", "journey", "work", "data", "contact"] as const;
 const mono = "font-family:'DM Mono',ui-monospace,monospace;";
 const ctl = `${mono}background:transparent;border:1px solid rgba(245,244,240,.25);padding:7px 12px;cursor:pointer;font-size:9px;letter-spacing:.22em;color:rgba(245,244,240,.7)`;
-const step = `${mono}width:20px;height:20px;border-radius:50%;flex:none;cursor:pointer;padding:0;border:1px solid rgba(245,244,240,.2);background:transparent;display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(245,244,240,.6)`;
 
 export default function Nav() {
   const { dark, toggle, accent, setAccent } = useTheme();
   const { progress, showTop, active } = useScrollState();
-  const audio = useAudio(SONGS);
+  const audio = useAudio();
   const [menu, setMenu] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
   const groupRef = useRef<HTMLDivElement>(null);
@@ -57,7 +56,7 @@ export default function Nav() {
           ))}
         </div>
         <div style={s("display:flex;align-items:center;gap:16px;flex:none")}>
-          {/* biome-ignore lint/a11y/noStaticElementInteractions: hover/focus only reveals the track list; every control inside is a real button */}
+          {/* biome-ignore lint/a11y/noStaticElementInteractions: hover/focus only reveals the track label; the control inside is a real button */}
           <div
             ref={groupRef}
             onMouseEnter={() => setMenu(true)}
@@ -71,15 +70,6 @@ export default function Nav() {
             }}
             style={s("position:relative;display:flex;align-items:center;flex:none")}
           >
-            <button
-              type="button"
-              className="nav-btn"
-              aria-label="Previous song"
-              onClick={() => audio.step(-1)}
-              style={s(`${step};margin-right:6px`)}
-            >
-              ⏮
-            </button>
             <button
               type="button"
               className="nav-btn"
@@ -101,65 +91,16 @@ export default function Nav() {
                 {audio.on ? "" : "▶"}
               </span>
             </button>
-            <button
-              type="button"
-              className="nav-btn"
-              aria-label="Next song"
-              onClick={() => audio.step(1)}
-              style={s(`${step};margin-left:6px`)}
-            >
-              ⏭
-            </button>
             <div
-              style={s(
-                `${mono}position:absolute;top:calc(100% + 16px);right:0;background:rgba(10,10,10,.95);border:1px solid rgba(245,244,240,.18);color:rgba(245,244,240,.75);padding:0;font-size:8.5px;letter-spacing:.22em;white-space:nowrap;opacity:${menu ? 1 : 0};visibility:${menu ? "visible" : "hidden"};transition:opacity .35s,visibility .35s;pointer-events:${menu ? "auto" : "none"};min-width:260px;z-index:90`,
-              )}
+              aria-hidden={!(menu || audio.on)}
+              style={{
+                ...s(
+                  `${mono}position:absolute;top:calc(100% + 16px);right:0;background:rgba(10,10,10,.9);border:1px solid rgba(245,244,240,.18);color:rgba(245,244,240,.75);padding:7px 11px;font-size:8.5px;letter-spacing:.22em;white-space:nowrap;transition:opacity .35s;pointer-events:none;z-index:90`,
+                ),
+                opacity: menu || audio.on ? 1 : 0,
+              }}
             >
-              <div
-                style={s(
-                  "padding:8px 12px;border-bottom:1px solid rgba(245,244,240,.1);color:rgba(245,244,240,.45);font-size:7.5px;letter-spacing:.28em",
-                )}
-              >
-                {audio.on ? "NOW PLAYING" : "SELECT A TRACK"}
-              </div>
-              {SONGS.map((song, i) => (
-                <button
-                  type="button"
-                  key={song.id}
-                  className="song-row"
-                  tabIndex={menu ? 0 : -1}
-                  onClick={() => audio.select(i)}
-                  style={s(
-                    `${mono}width:100%;border:0;text-align:left;padding:7px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;background:${i === audio.idx ? "rgba(244,135,75,.08)" : "transparent"};font-size:inherit;letter-spacing:inherit`,
-                  )}
-                >
-                  <span
-                    style={s(
-                      `width:5px;height:5px;border-radius:50%;flex:none;background:${i === audio.idx ? (audio.on ? "#F4874B" : "var(--accent,#C93A1A)") : "rgba(245,244,240,.25)"}`,
-                    )}
-                  />
-                  <span style={s("display:flex;flex-direction:column;gap:1px")}>
-                    <span
-                      style={s(
-                        `color:${i === audio.idx ? "#F4874B" : "rgba(245,244,240,.75)"};font-size:8px;letter-spacing:.2em`,
-                      )}
-                    >
-                      {song.title}
-                    </span>
-                    <span
-                      style={s("color:rgba(245,244,240,.35);font-size:6.5px;letter-spacing:.16em")}
-                    >
-                      {song.artist}
-                    </span>
-                  </span>
-                  <span style={s("flex:1")} />
-                  <span
-                    style={s("color:rgba(245,244,240,.3);font-size:6.5px;letter-spacing:.18em")}
-                  >
-                    {song.genre}
-                  </span>
-                </button>
-              ))}
+              {audio.on ? "NOW SPINNING" : "PLAY"} — LO-FI LOOP · SIDE A
             </div>
           </div>
           <button

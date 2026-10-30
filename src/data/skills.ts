@@ -70,12 +70,78 @@ export const SKILLS: Skill[] = [
 ];
 
 export const LBLS = ["FRONTEND", "BACKEND", "DATA & ML", "DEVOPS", "TOOLS"];
-export const TOPS = ["2 × S", "1 × S", "1 × S", "2 × A", "1 × B"];
+export const TREE_NAMES = ["Frontend", "Backend", "Data & ML", "DevOps", "Tools"];
+export const TREE_KANJI = ["前端", "後端", "分析", "運用", "道具"];
 export const RANKS = ["", "C", "B", "A", "S"];
-export const RCOL: Record<string, string> = {
-  S: "#F4874B",
-  A: "#F5F4F0",
-  B: "rgba(245,244,240,.55)",
-  C: "rgba(245,244,240,.35)",
-};
-export const GDOT = ["#F5F4F0", "#b8b4a6", "#F4874B", "#8a8578", "#6f6c62"];
+
+/** Stat-card bars: [label, group index into LBLS, value 0–100]. */
+export const STATS: [label: string, group: number, value: number][] = [
+  ["DATA & ML", 2, 94],
+  ["FRONTEND", 0, 86],
+  ["BACKEND", 1, 80],
+  ["DEVOPS", 3, 68],
+  ["TOOLS", 4, 62],
+];
+
+export interface Formation {
+  k: string;
+  kanji: string;
+  mission: string;
+  name: string;
+  desc: string;
+  proof: string;
+  href: string;
+  /** [role, tool, code] */
+  slots: [role: string, tool: string, code: string][];
+}
+
+export const FORMS: Formation[] = [
+  {
+    k: "A",
+    kanji: "製品",
+    mission: "SAAS PRODUCT",
+    name: "The product build",
+    desc: "Auth to dashboard in one stack — the formation for shipping a product fast.",
+    proof: "PROJECTPULSE",
+    href: "#work",
+    slots: [
+      ["UI", "React", "FE-01"],
+      ["FRAMEWORK", "Next.js", "FE-02"],
+      ["AUTH + DATA", "Supabase", "DB-04"],
+      ["DATABASE", "PostgreSQL", "DB-01"],
+      ["DEPLOY", "Vercel", "OP-03"],
+    ],
+  },
+  {
+    k: "B",
+    kanji: "分析",
+    mission: "DATA / ML",
+    name: "The evidence engine",
+    desc: "From raw rows to a monitored model — the formation an analyst lives in.",
+    proof: "DOCCHAT · ML MONITORING",
+    href: "#work",
+    slots: [
+      ["ANALYSIS", "Python", "LG-01"],
+      ["QUERY", "SQL", "DB-02"],
+      ["SERVING", "FastAPI", "BE-03"],
+      ["VIZ", "Plotly", "DA-04"],
+      ["RUNTIME", "Docker · AWS", "OP-01"],
+    ],
+  },
+  {
+    k: "C",
+    kanji: "商店",
+    mission: "CLIENT E-COM",
+    name: "The storefront sprint",
+    desc: "Concept to production storefront, directly with the client — speed over ceremony.",
+    proof: "APPAREL STOREFRONT",
+    href: "#work",
+    slots: [
+      ["PLATFORM", "Shopify", "EC-01"],
+      ["TEMPLATE", "Liquid", "EC-02"],
+      ["CUSTOM UX", "JavaScript", "LG-02"],
+      ["CI / SHIP", "GitHub Actions", "OP-05"],
+      ["CLIENT", "Direct", "★"],
+    ],
+  },
+];

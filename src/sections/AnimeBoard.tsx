@@ -46,7 +46,7 @@ export default function AnimeBoard() {
               "font-family:'DM Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.2em;color:rgba(var(--ink),.4)",
             )}
           >
-            PLACEHOLDER QUOTES — CLICK A CARD TO CYCLE ↻
+            CLICK A CARD TO CYCLE ↻
           </div>
         </div>
         <div

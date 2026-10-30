@@ -273,63 +273,8 @@ export default function Journey() {
                 "font-size:13.5px;line-height:1.7;color:rgba(var(--ink),.62);font-weight:300;max-width:56ch",
               )}
             >
-              Graduated with B.Tech in Data Science &amp; Engineering from VBIT — thesis and
-              foundational engineering arc complete.
-            </p>
-          </div>
-          <div
-            style={s(
-              "flex:0 0 auto;margin-left:auto;border:1px solid rgba(var(--ink),.25);padding:8px 13px;font-family:'DM Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.22em;color:rgba(var(--ink),.55)",
-            )}
-          >
-            STATUS — COMPLETE
-          </div>
-        </div>
-        <div
-          data-reveal
-          style={s(
-            "display:flex;flex-wrap:wrap;align-items:baseline;column-gap:clamp(24px,4vw,60px);row-gap:10px;padding:clamp(26px,4vh,38px) 8px;border-bottom:1px solid rgba(var(--ink),.12);transition:background .3s",
-          )}
-          className="hv17"
-        >
-          <div style={s("flex:0 0 200px;min-width:170px")}>
-            <div
-              style={s(
-                "display:flex;align-items:center;gap:10px;font-family:'DM Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.26em;color:var(--accent,#C93A1A)",
-              )}
-            >
-              ARC 05{" "}
-              <span
-                style={s(
-                  "font-family:'Noto Serif JP',serif;font-size:15px;letter-spacing:.1em;color:rgba(var(--ink),.45)",
-                )}
-              >
-                新章
-              </span>
-            </div>
-            <div
-              style={s(
-                "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:clamp(40px,3.6vw,54px);line-height:1.1",
-              )}
-            >
-              2026+
-            </div>
-          </div>
-          <div style={s("flex:1 1 300px;max-width:600px")}>
-            <div
-              style={s(
-                "font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(21px,2vw,25px);margin-bottom:8px",
-              )}
-            >
-              The next chapter.
-            </div>
-            <p
-              style={s(
-                "font-size:13.5px;line-height:1.7;color:rgba(var(--ink),.62);font-weight:300;max-width:56ch",
-              )}
-            >
-              Full-time engineering &amp; data career underway — shipping production software and
-              real-time systems at scale.
+              Graduated in June. Open to full-time full-stack, AI/ML and data roles — remote or
+              Hyderabad.
             </p>
           </div>
           <div
@@ -356,7 +301,7 @@ export default function Journey() {
               "font-family:'DM Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.24em;color:rgba(var(--ink),.45)",
             )}
           >
-            NEXT EPISODE — BUILDING SCALABLE SYSTEMS · PREMIERES ONGOING
+            NEXT EPISODE — FIRST FULL-TIME ROLE · PREMIERES NOW
           </span>
           <span
             style={s(

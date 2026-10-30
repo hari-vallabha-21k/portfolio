@@ -55,10 +55,6 @@
   box-shadow: 0 34px 60px -30px rgba(10, 10, 10, 0.5) !important;
   border-color: var(--accent, #c93a1a) !important;
 }
-.hv12:hover,
-.hv12:focus-visible {
-  background: rgba(244, 135, 75, 0.06) !important;
-}
 .hv13:hover,
 .hv13:focus-visible {
   background: rgba(var(--ink), 0.03) !important;
@@ -75,36 +71,9 @@
 .hv16:focus-visible {
   background: rgba(var(--ink), 0.03) !important;
 }
-.hv17:hover,
-.hv17:focus-visible {
-  background: rgba(var(--ink), 0.03) !important;
-}
-.hv18:hover,
-.hv18:focus-visible {
-  color: var(--accent, #c93a1a) !important;
-}
-.hv19:hover,
-.hv19:focus-visible {
-  transform: scale(1.015) !important;
-}
 .hv20:hover,
 .hv20:focus-visible {
   animation-play-state: paused !important;
-}
-.hv21:hover,
-.hv21:focus-visible {
-  transform: translateY(-5px) !important;
-  border-color: var(--accent, #c93a1a) !important;
-}
-.hv22:hover,
-.hv22:focus-visible {
-  transform: translateY(-5px) !important;
-  border-color: var(--accent, #c93a1a) !important;
-}
-.hv23:hover,
-.hv23:focus-visible {
-  transform: translateY(-5px) !important;
-  border-color: var(--accent, #c93a1a) !important;
 }
 .hv24:hover,
 .hv24:focus-visible {

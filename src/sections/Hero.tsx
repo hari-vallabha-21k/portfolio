@@ -1,4 +1,5 @@
 import { Component, lazy, type ReactNode, Suspense, useState } from "react";
+import { PSI_DRIFT } from "../data/misc";
 import { s } from "../lib/css";
 
 // The 3D scene (three.js) is its own chunk and only loads when it is switched on.
@@ -74,7 +75,6 @@ export default function Hero() {
       </div>
       <div style={s("position:relative;z-index:5;width:min(1040px,100%)")}>
         <div
-          data-chip="18"
           style={s(
             "position:absolute;top:-26px;left:-12px;z-index:7;will-change:transform;animation:fadeUp .8s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--boot,2.45s) + .7s)",
           )}
@@ -88,11 +88,60 @@ export default function Hero() {
           </div>
         </div>
         <div
-          data-chip="28"
           style={s(
-            "position:absolute;top:15%;right:-14px;z-index:7;will-change:transform;animation:fadeUp .8s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--boot,2.45s) + .85s)",
+            "position:absolute;top:31%;right:-14px;z-index:7;will-change:transform;animation:fadeUp .8s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--boot,2.45s) + .85s)",
           )}
-        ></div>
+        >
+          <div
+            style={s(
+              "animation:floaty 5.6s ease-in-out 1.2s infinite;background:var(--card);border:1px solid rgba(var(--ink),.18);box-shadow:0 18px 40px -22px rgba(10,10,10,.35);padding:14px 18px",
+            )}
+          >
+            <div
+              style={s(
+                "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:30px;line-height:1;color:var(--accent,#C93A1A)",
+              )}
+            >
+              −62%
+            </div>
+            <div
+              style={s(
+                "font-family:'DM Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.2em;color:rgba(var(--ink),.5);margin-top:6px",
+              )}
+            >
+              RESOLUTION TIME
+            </div>
+          </div>
+        </div>
+        <div
+          style={s(
+            "position:absolute;bottom:-24px;left:5%;z-index:7;will-change:transform;animation:fadeUp .8s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--boot,2.45s) + 1s)",
+          )}
+        >
+          <div
+            style={s(
+              "animation:floaty 6s ease-in-out 2.4s infinite;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid rgba(var(--ink),.18);box-shadow:0 18px 40px -22px rgba(10,10,10,.35);padding:10px 14px",
+            )}
+          >
+            <svg aria-hidden="true" viewBox="0 0 90 28" style={s("width:72px;overflow:visible")}>
+              <path
+                d="M0,20 L14,16 L28,18 L42,12 L56,15 L70,7 L84,10"
+                fill="none"
+                stroke="#F4874B"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span
+              style={s(
+                "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em;color:rgba(var(--ink),.65);white-space:nowrap",
+              )}
+            >
+              PSI {PSI_DRIFT.toFixed(2)} — DRIFT STABLE
+            </span>
+          </div>
+        </div>
 
         <div
           style={s(
@@ -121,7 +170,7 @@ export default function Hero() {
               <span
                 style={s("width:6px;height:6px;border-radius:50%;background:var(--accent,#C93A1A)")}
               ></span>
-              hari_vallabha.tsx
+              hari_vallabha.ipynb
             </div>
             <div
               style={s(
@@ -194,7 +243,10 @@ export default function Hero() {
                   )}
                 >
                   (HI, I'M ·{" "}
-                  <span style={s("font-family:'Noto Serif JP',serif;letter-spacing:.1em")}></span>)
+                  <span style={s("font-family:'Noto Serif JP',serif;letter-spacing:.1em")}>
+                    はじめまして
+                  </span>
+                  )
                 </span>{" "}
                 <span
                   style={s(
@@ -219,7 +271,7 @@ export default function Hero() {
                     )}
                     className="hv1"
                   >
-                    V
+                    v
                   </span>
                   <span
                     style={s(
@@ -361,8 +413,8 @@ export default function Hero() {
                   "font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(17px,1.8vw,22px);line-height:1.5;color:rgba(var(--ink),.62);max-width:58ch;margin-top:16px;animation:fadeUp .9s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--boot,2.45s) + .7s)",
                 )}
               >
-                Building products where code meets evidence — from React storefronts to model-drift
-                dashboards.
+                I turn raw data into decisions — drift monitors, KPI dashboards, SQL — and I can
+                ship the product that acts on them.
               </p>
             </div>
           </div>

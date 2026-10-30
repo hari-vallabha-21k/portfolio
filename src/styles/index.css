@@ -234,10 +234,6 @@ body {
 .nav-btn:not([aria-label="Back to top"]):not([aria-label^="Accent"]):hover {
   color: #f4874b !important;
 }
-.song-row:hover,
-.song-row:focus-visible {
-  background: rgba(244, 135, 75, 0.12) !important;
-}
 .close-btn:hover,
 .close-btn:focus-visible {
   background: #f5f4f0 !important;
@@ -291,4 +287,23 @@ body:has(dialog[open]) {
   background: var(--accent, #c93a1a) !important;
   color: #f5f4f0 !important;
   border-color: var(--accent, #c93a1a) !important;
+}
+
+/* Skills + Stack: hover lift, and the pulse that runs along a formation's combo chain */
+.skill-tile:hover {
+  border-color: #f4874b !important;
+  transform: translateY(-3px);
+  background: #16130f !important;
+}
+.slot-card:hover {
+  border-color: #f4874b !important;
+  transform: translateY(-3px);
+}
+@keyframes comboPulse {
+  from {
+    left: -60px;
+  }
+  to {
+    left: 100%;
+  }
 }

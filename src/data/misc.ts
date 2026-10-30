@@ -1,30 +1,7 @@
 export const EASE = "cubic-bezier(.22,.61,.36,1)";
 
-export interface Song {
-  id: string;
-  title: string;
-  artist: string;
-  genre: string;
-  src: string;
-}
-
-// NOTE: these are commercial tracks — replace with royalty-free audio before going live.
-export const SONGS: Song[] = [
-  {
-    id: "reflection",
-    title: "REFLECTIONS",
-    artist: "THE NEIGHBOURHOOD",
-    genre: "ALT ROCK",
-    src: "/music/The Neighbourhood - Reflections (Lyrics).mp3",
-  },
-  {
-    id: "starboy",
-    title: "STARBOY",
-    artist: "THE WEEKND FT. DAFT PUNK",
-    genre: "SYNTH-POP",
-    src: "/music/120._The_Weeknd_feat._Daft_Pu_-_Starboy_(mp3.pm).mp3",
-  },
-];
+/** Current model-drift PSI shown in the hero chip, the Data Room card and the ML Monitoring card. */
+export const PSI_DRIFT = 0.05;
 
 export const SQL_TEXT =
   "SELECT lang, COUNT(*) AS queries,\n       ROUND(AVG(resolution_s), 1) AS avg_s\nFROM   assistant_logs\nWHERE  ts > now() - interval '90 days'\nGROUP  BY lang ORDER BY 2 DESC;\n\n lang | queries | avg_s\n------+---------+-------\n EN   |   7,412 | 168.4\n HI   |   3,458 | 181.2\n TE   |   1,904 | 176.9\n(3 rows · 41 ms)";

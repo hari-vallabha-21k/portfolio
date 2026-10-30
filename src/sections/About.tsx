@@ -48,10 +48,19 @@ export default function About() {
             </div>
             <div
               style={s(
-                "position:absolute;right:20px;bottom:20px;z-index:2;font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.22em;color:var(--accent,#C93A1A);background:rgba(10,10,10,.7);backdrop-filter:blur(6px);padding:8px 12px;border:1px solid rgba(245,244,240,.15)",
+                "position:absolute;right:-14px;top:34px;z-index:2;background:var(--paper);border:1px solid rgba(var(--ink),.15);padding:14px 18px;box-shadow:0 24px 50px -24px rgba(10,10,10,.5);animation:floaty 4.5s ease-in-out infinite;max-width:230px",
               )}
             >
-              VBIT CLASS OF 2026
+              <div
+                style={s(
+                  "font-family:'DM Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.26em;color:var(--accent,#C93A1A);margin-bottom:6px",
+                )}
+              >
+                CURRENTLY
+              </div>
+              <div style={s("font-size:12.5px;line-height:1.55;color:rgba(var(--ink),.75)")}>
+                Open to full-time roles — B.Tech, Data Science &amp; Engineering, VBIT '26
+              </div>
             </div>
           </div>
           <div
@@ -60,7 +69,7 @@ export default function About() {
             )}
           >
             <span>K. Hari Vallabha</span>
-            <span>VBIT Class of 2026</span>
+            <span>Portfolio — 2026</span>
           </div>
         </div>
         <div style={s("flex:1.4 1 380px;padding-top:16px")}>
@@ -79,7 +88,8 @@ export default function About() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(34px,4vw,54px);line-height:1.04;letter-spacing:-.01em;max-width:560px;margin:22px 0 46px",
             )}
           >
-            Engineer first, analyst always — I ship the product, then read its pulse.
+            Analyst by training, AI/ML engineer by trade — I read the numbers, then build what they
+            ask for.
           </h2>
           <div
             data-reveal
@@ -93,16 +103,17 @@ export default function About() {
                   "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:500;color:var(--accent,#C93A1A);margin-bottom:14px",
                 )}
               >
-                The engineer
+                The analyst
               </h3>
               <p
                 style={s(
                   "font-size:14px;line-height:1.75;color:rgba(var(--ink),.66);font-weight:300",
                 )}
               >
-                Full-stack developer building and deploying scalable web and desktop apps with
-                React, Node.js and Python — RESTful APIs, third-party integrations, backend
-                performance. End-to-end, with a bias for usability and reliability.
+                Data science by training and by instinct: SQL and Python for the digging, Pandas for
+                the cleaning, drift tests and KPI dashboards for the watching. I care less about the
+                chart than about the decision it changes — so every analysis ends in a
+                recommendation, not a deck.
               </p>
             </div>
             <div>
@@ -111,15 +122,16 @@ export default function About() {
                   "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:500;color:var(--accent,#C93A1A);margin-bottom:14px",
                 )}
               >
-                The analyst
+                The engineer edge
               </h3>
               <p
                 style={s(
                   "font-size:14px;line-height:1.75;color:rgba(var(--ink),.66);font-weight:300",
                 )}
               >
-                Trained in data science — drift detection, KPI dashboards and SQL are home turf. I
-                instrument what I build, so every feature ships with the numbers to prove it worked.
+                Most analysts hand off a spreadsheet; I can ship the thing. React, Node and Python
+                mean my dashboards go live, my pipelines get deployed, and nothing waits on a dev
+                queue to become useful.
               </p>
             </div>
           </div>

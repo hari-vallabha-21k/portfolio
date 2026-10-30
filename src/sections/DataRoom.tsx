@@ -1,5 +1,6 @@
 import CountUp from "../components/CountUp";
 import TypedSql from "../components/TypedSql";
+import { PSI_DRIFT } from "../data/misc";
 import { PROJECTS } from "../data/projects";
 import { s } from "../lib/css";
 
@@ -106,7 +107,7 @@ export default function DataRoom() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:54px;line-height:1",
             )}
           >
-            <CountUp to={0.05} decimals={2} />
+            <CountUp to={PSI_DRIFT} decimals={2} />
           </div>
           <div
             style={s(

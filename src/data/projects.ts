@@ -32,6 +32,8 @@ export interface Project {
   imageAlt?: string;
 }
 
+import { PSI_DRIFT } from "./misc";
+
 const GH = "https://github.com/hari-vallabha-21k";
 
 export const PROJECTS: Project[] = [
@@ -154,7 +156,7 @@ export const PROJECTS: Project[] = [
     stackStr: "Python · Flask · Plotly",
     stack: ["Python", "Flask", "Plotly", "REST APIs"],
     sys: "SYS — MODEL OPS",
-    chip: "PSI 0.05 · OK",
+    chip: `PSI ${PSI_DRIFT.toFixed(2)} · OK`,
     spark: "M0,30 L12,27 L24,29 L36,24 L48,26 L60,21 L72,23 L84,17 L96,8 L108,14 L120,11",
     artBg:
       "radial-gradient(120% 110% at 82% 18%, rgba(244,135,75,.28), transparent 55%), linear-gradient(155deg, #17150f 0%, #262019 55%, #3a2c1c 100%)",

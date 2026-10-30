@@ -1,34 +1,40 @@
-import { Fragment, useState } from "react";
-import { GDOT, LBLS, RANKS, RCOL, SKILLS, TOPS } from "../data/skills";
+import { type PointerEvent, useRef, useState } from "react";
+import { LBLS, RANKS, SKILLS, STATS, TREE_KANJI, TREE_NAMES } from "../data/skills";
 import { s } from "../lib/css";
 
+const mono = "font-family:'DM Mono',ui-monospace,monospace;";
+const serif = "font-family:'Cormorant Garamond',Georgia,serif;";
+const ORANGE = "#F4874B";
+const rankColor = (w: number) => (w === 4 ? ORANGE : w === 3 ? "#F5F4F0" : "rgba(245,244,240,.5)");
+
+/** The stat sheet: a tilting class card, a skill-tree picker and one tile per skill with its rank. */
 export default function Skills() {
-  const [hi, setHi] = useState({ gi: -1, name: "", w: 0 });
-  const hover = (next: { gi: number; name: string; w: number }) =>
-    setHi((p) => (p.gi === next.gi && p.name === next.name ? p : next));
-  const clear = () => hover({ gi: -1, name: "", w: 0 });
-  const ax = (i: number) => {
-    const hot = hi.gi === i;
-    return {
-      col: hot ? "#F4874B" : "rgba(245,244,240,.6)",
-      col2: hot ? "rgba(244,135,75,.85)" : "rgba(245,244,240,.32)",
-      dotR: hot ? 6.5 : 4,
-      dotFill: hot ? "#F4874B" : GDOT[i],
-    };
+  const [tree, setTree] = useState(2);
+  const [hi, setHi] = useState<{ name: string; w: number } | null>(null);
+  const card = useRef<HTMLDivElement>(null);
+  // Read once: the card's tilt is skipped for visitors who asked for reduced motion.
+  const [motionOk] = useState(() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const pickTree = (gi: number) => {
+    setTree(gi);
+    setHi(null); // the hovered tile is about to disappear without a mouseleave
   };
-  const [axFE, axBE, axDA, axOP, axTL] = [0, 1, 2, 3, 4].map(ax);
-  const hudCol = hi.name ? "#F4874B" : "rgba(245,244,240,.5)";
-  const radarHud = hi.name
-    ? `● ${hi.name.toUpperCase()} — ${LBLS[hi.gi]} · RANK ${RANKS[hi.w]}`
-    : "HOVER A SKILL — THE CHART ANSWERS";
-  const rankGroups = LBLS.map((label, gi) => ({
-    label,
-    gi,
-    top: TOPS[gi],
-    rows: SKILLS.filter((sk) => sk[1] === gi)
-      .sort((a, b) => b[2] - a[2])
-      .map((sk) => ({ n: sk[0], w: sk[2], r: RANKS[sk[2]], col: RCOL[RANKS[sk[2]]] })),
-  }));
+
+  const tilt = (e: PointerEvent<HTMLDivElement>) => {
+    const el = card.current;
+    if (!el || !motionOk || e.pointerType !== "mouse") return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `perspective(900px) rotateY(${x * 16}deg) rotateX(${-y * 16}deg)`;
+    el.style.setProperty("--mx", `${(x + 0.5) * 100}%`);
+    el.style.setProperty("--my", `${(y + 0.5) * 100}%`);
+  };
+  const untilt = () => {
+    if (card.current) card.current.style.transform = "perspective(900px)";
+  };
+
+  const skills = SKILLS.filter((sk) => sk[1] === tree).sort((a, b) => b[2] - a[2]);
+
   return (
     <section
       id="skills"
@@ -44,7 +50,7 @@ export default function Skills() {
       ></div>
       <div
         style={s(
-          "position:absolute;left:clamp(16px,3vw,44px);bottom:36px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:clamp(90px,11vw,150px);line-height:.8;color:rgba(245,244,240,.05);pointer-events:none",
+          `position:absolute;left:clamp(16px,3vw,44px);bottom:36px;${serif}font-weight:700;font-size:clamp(90px,11vw,150px);line-height:.8;color:rgba(245,244,240,.05);pointer-events:none`,
         )}
       >
         03
@@ -58,15 +64,17 @@ export default function Skills() {
         <div>
           <div
             style={s(
-              "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent,#C93A1A)",
+              `${mono}font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent,#C93A1A)`,
             )}
           >
             The stat sheet — 03 ·{" "}
-            <span style={s("font-family:'Noto Serif JP',serif;letter-spacing:.14em")}>能力</span>
+            <span lang="ja" style={s("font-family:'Noto Serif JP',serif;letter-spacing:.14em")}>
+              能力
+            </span>
           </div>
           <h2
             style={s(
-              "font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(40px,5vw,62px);letter-spacing:-.01em;margin-top:10px",
+              `${serif}font-weight:500;font-size:clamp(40px,5vw,62px);letter-spacing:-.01em;margin-top:10px`,
             )}
           >
             Abilities, ranked<span style={s("color:var(--accent,#C93A1A)")}>.</span>
@@ -74,318 +82,280 @@ export default function Skills() {
         </div>
         <div
           style={s(
-            "font-family:'DM Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;color:rgba(245,244,240,.45);text-transform:uppercase",
+            `${mono}font-size:10px;letter-spacing:.2em;color:rgba(245,244,240,.45);text-transform:uppercase`,
           )}
         >
-          Hover a skill — the chart answers
+          Pick a skill tree · hover to equip
         </div>
       </div>
+
       <div
         style={s(
-          "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(28px,4.5vw,60px);margin-top:44px;align-items:stretch",
+          "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,4.5vw,64px);margin-top:44px;align-items:start",
         )}
       >
-        <div
-          data-reveal
-          style={s(
-            "position:relative;min-height:clamp(430px,54vh,580px);max-height:580px;align-self:start;border:1px solid rgba(245,244,240,.14);background:radial-gradient(70% 58% at 50% 46%, rgba(244,135,75,.07), transparent 64%), #0d0c0b;overflow:hidden",
-          )}
-        >
-          <svg
-            aria-hidden="true"
-            viewBox={"0 0 580 540"}
-            preserveAspectRatio="xMidYMid meet"
-            style={s("position:absolute;inset:0;width:100%;height:100%")}
-          >
-            <polygon
-              points={"290,226.5 333.3,257.9 316.7,308.8 263.3,308.8 246.7,257.9"}
-              fill="none"
-              stroke={"rgba(245,244,240,.09)"}
-              strokeWidth="1"
-            ></polygon>
-            <polygon
-              points={"290,181 376.6,243.9 343.5,345.6 236.5,345.6 203.4,243.9"}
-              fill="none"
-              stroke={"rgba(245,244,240,.09)"}
-              strokeWidth="1"
-            ></polygon>
-            <polygon
-              points={"290,135.5 419.8,229.8 370.2,382.4 209.8,382.4 160.2,229.8"}
-              fill="none"
-              stroke={"rgba(245,244,240,.09)"}
-              strokeWidth="1"
-            ></polygon>
-            <polygon
-              points={"290,90 463.1,215.8 397,419.2 183,419.2 116.9,215.8"}
-              fill="none"
-              stroke={"rgba(245,244,240,.16)"}
-              strokeWidth="1"
-            ></polygon>
-            <line
-              x1={"290"}
-              y1="272"
-              x2={"290"}
-              y2={"90"}
-              stroke={"rgba(245,244,240,.12)"}
-              strokeWidth="1"
-            ></line>
-            <line
-              x1={"290"}
-              y1="272"
-              x2="463.1"
-              y2={"215.8"}
-              stroke={"rgba(245,244,240,.12)"}
-              strokeWidth="1"
-            ></line>
-            <line
-              x1={"290"}
-              y1="272"
-              x2="397"
-              y2="419.2"
-              stroke={"rgba(245,244,240,.12)"}
-              strokeWidth="1"
-            ></line>
-            <line
-              x1={"290"}
-              y1="272"
-              x2="183"
-              y2="419.2"
-              stroke={"rgba(245,244,240,.12)"}
-              strokeWidth="1"
-            ></line>
-            <line
-              x1={"290"}
-              y1="272"
-              x2="116.9"
-              y2={"215.8"}
-              stroke={"rgba(245,244,240,.12)"}
-              strokeWidth="1"
-            ></line>
-            <polygon
-              data-fade
-              points={"290,135.5 432.8,225.6 367.9,379.2 213,378 192.6,240.4"}
-              fill={"rgba(244,135,75,.13)"}
-            ></polygon>
-            <polygon
-              data-draw
-              pathLength="1"
-              points={"290,135.5 432.8,225.6 367.9,379.2 213,378 192.6,240.4"}
-              fill="none"
-              stroke="#F4874B"
-              strokeWidth="1.6"
-            ></polygon>
-            <circle cx={"290"} cy={"135.5"} r={axFE.dotR} fill={axFE.dotFill}></circle>
-            <circle cx="432.8" cy={"225.6"} r={axBE.dotR} fill={axBE.dotFill}></circle>
-            <circle cx="367.9" cy="379.2" r={axDA.dotR} fill={axDA.dotFill}></circle>
-            <circle cx="213" cy="378" r={axOP.dotR} fill={axOP.dotFill}></circle>
-            <circle cx="192.6" cy={"240.4"} r={axTL.dotR} fill={axTL.dotFill}></circle>
-            <circle cx={"290"} cy="272" r="3" fill={"#F5F4F0"} opacity=".7"></circle>
-            <text
-              x={"290"}
-              y={"52"}
-              textAnchor="middle"
-              fill={axFE.col}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.22em",
-              )}
-            >
-              FRONTEND
-            </text>
-            <text
-              x={"290"}
-              y="67"
-              textAnchor="middle"
-              fill={axFE.col2}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em",
-              )}
-            >
-              2 × S
-            </text>
-            <text
-              x="496"
-              y={"202"}
-              textAnchor="start"
-              fill={axBE.col}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.22em",
-              )}
-            >
-              BACKEND
-            </text>
-            <text
-              x="496"
-              y="217"
-              textAnchor="start"
-              fill={axBE.col2}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em",
-              )}
-            >
-              1 × S
-            </text>
-            <text
-              x="419"
-              y="448"
-              textAnchor="start"
-              fill={axDA.col}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.22em",
-              )}
-            >
-              DATA &amp; ML
-            </text>
-            <text
-              x="419"
-              y="463"
-              textAnchor="start"
-              fill={axDA.col2}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em",
-              )}
-            >
-              1 × S
-            </text>
-            <text
-              x="161"
-              y="448"
-              textAnchor="end"
-              fill={axOP.col}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.22em",
-              )}
-            >
-              DEVOPS
-            </text>
-            <text
-              x="161"
-              y="463"
-              textAnchor="end"
-              fill={axOP.col2}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em",
-              )}
-            >
-              2 × A
-            </text>
-            <text
-              x="83"
-              y={"202"}
-              textAnchor="end"
-              fill={axTL.col}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.22em",
-              )}
-            >
-              TOOLS
-            </text>
-            <text
-              x="83"
-              y="217"
-              textAnchor="end"
-              fill={axTL.col2}
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em",
-              )}
-            >
-              1 × B
-            </text>
-          </svg>
+        <div data-reveal style={s("display:flex;justify-content:center")}>
+          {/* The card tilts toward the pointer; it is decorative, the controls inside are real buttons. */}
           <div
+            ref={card}
+            onPointerMove={tilt}
+            onPointerLeave={untilt}
             style={s(
-              "position:absolute;top:12px;left:14px;font-family:'DM Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.26em;color:rgba(245,244,240,.35);pointer-events:none",
+              "position:relative;width:min(100%,380px);aspect-ratio:5/7;background:linear-gradient(160deg,#1a1712 0%,#0e0d0b 55%,#1d140c 100%);border:1px solid rgba(244,135,75,.45);box-shadow:0 0 0 6px #0A0A0A,0 0 0 7px rgba(245,244,240,.14),0 50px 90px -40px rgba(201,58,26,.45);transition:transform .25s ease-out;transform:perspective(900px);will-change:transform;overflow:hidden;cursor:default",
             )}
           >
-            CLASS ASSESSMENT — 05 AXES · SELF-RANKED
-          </div>
-          <div
-            style={s(
-              "position:absolute;top:12px;right:14px;display:flex;align-items:center;gap:8px;font-family:'DM Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.26em;color:rgba(245,244,240,.35);pointer-events:none",
-            )}
-          >
-            <span
+            <div
+              aria-hidden="true"
               style={s(
-                "width:6px;height:6px;border-radius:50%;background:var(--accent,#C93A1A);animation:pulseDot 1.4s ease-in-out infinite",
+                "position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(55% 45% at var(--mx,50%) var(--my,30%),rgba(244,135,75,.32),transparent 62%),linear-gradient(115deg,transparent 32%,rgba(245,244,240,.08) 46%,transparent 60%)",
               )}
-            ></span>
-            LIVE
-          </div>
-          <div
-            style={s(
-              `position:absolute;left:14px;bottom:12px;font-family:'DM Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;color:${hudCol};pointer-events:none;max-width:calc(100% - 28px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap`,
-            )}
-          >
-            {radarHud}
-          </div>
-        </div>
-        <div data-reveal style={s("display:flex;flex-direction:column")}>
-          <div style={s("columns:15rem;column-gap:clamp(28px,3.5vw,52px);flex:1")}>
-            {rankGroups.map((g) => (
-              <Fragment key={g.label}>
-                <div style={s("break-inside:avoid;padding-bottom:24px")}>
-                  <div
-                    style={s(
-                      "display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(245,244,240,.14);padding:10px 2px 6px",
-                    )}
-                  >
-                    <span
+            ></div>
+            <div
+              aria-hidden="true"
+              lang="ja"
+              style={s(
+                "position:absolute;right:14px;top:56px;font-family:'Noto Serif JP',serif;font-weight:700;font-size:64px;line-height:1;writing-mode:vertical-rl;color:rgba(245,244,240,.07);pointer-events:none",
+              )}
+            >
+              機械学習
+            </div>
+            <div
+              style={s(
+                "position:relative;height:100%;display:flex;flex-direction:column;padding:20px 22px",
+              )}
+            >
+              <div
+                style={s("display:flex;justify-content:space-between;align-items:center;gap:10px")}
+              >
+                <span style={s(`${mono}font-size:9px;letter-spacing:.26em;color:${ORANGE}`)}>
+                  CLASS · AI/ML ENGINEER
+                </span>
+                <span
+                  style={s(
+                    `width:34px;height:34px;border:1.5px solid ${ORANGE};color:${ORANGE};display:flex;align-items:center;justify-content:center;${serif}font-weight:700;font-size:20px;transform:rotate(-8deg)`,
+                  )}
+                >
+                  S
+                </span>
+              </div>
+              <div style={s("margin-top:18px")}>
+                <div
+                  style={s(
+                    `${serif}font-weight:700;font-size:clamp(34px,4vw,44px);line-height:.92;letter-spacing:-.01em;color:#F5F4F0`,
+                  )}
+                >
+                  Hari
+                  <br />
+                  Vallabha
+                </div>
+                <div
+                  style={s(
+                    `${serif}font-style:italic;font-size:16px;color:rgba(245,244,240,.6);margin-top:8px`,
+                  )}
+                >
+                  Sub-class: full-stack engineer
+                </div>
+              </div>
+              <div style={s("display:flex;flex-direction:column;gap:10px;margin-top:auto")}>
+                {STATS.map(([label, gi, v]) => {
+                  const on = tree === gi;
+                  const col = on ? ORANGE : "rgba(245,244,240,.75)";
+                  return (
+                    <button
+                      key={label}
+                      type="button"
+                      aria-pressed={on}
+                      onClick={() => pickTree(gi)}
                       style={s(
-                        "font-family:'DM Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.24em;color:var(--accent,#C93A1A)",
+                        "display:grid;grid-template-columns:78px minmax(0,1fr) 26px;gap:10px;align-items:center;cursor:pointer;background:none;border:0;padding:0;color:inherit;text-align:left",
                       )}
                     >
-                      {g.label}
-                    </span>
-                    <span
-                      style={s(
-                        "font-family:'DM Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.2em;color:rgba(245,244,240,.35)",
-                      )}
-                    >
-                      TOP {g.top}
-                    </span>
-                  </div>
-                  {g.rows.map((it) => (
-                    <Fragment key={it.n}>
-                      {/* biome-ignore lint/a11y/noStaticElementInteractions: hover highlights a radar axis; the same information is in the visible text */}
-                      <div
-                        onMouseEnter={() => hover({ gi: g.gi, name: it.n, w: it.w })}
-                        onMouseLeave={clear}
+                      <span
                         style={s(
-                          "display:flex;align-items:baseline;gap:12px;padding:5px 2px;cursor:default;transition:background .25s",
+                          `${mono}font-size:8.5px;letter-spacing:.18em;color:${col};transition:color .3s`,
                         )}
-                        className="hv12"
+                      >
+                        {label}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        style={s(
+                          "display:block;height:6px;background:rgba(245,244,240,.1);position:relative",
+                        )}
                       >
                         <span
-                          style={s(
-                            "font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:19px;line-height:1.3;color:rgba(245,244,240,.8);white-space:nowrap",
-                          )}
-                        >
-                          {it.n}
-                        </span>
-                        <span
-                          style={s(
-                            "flex:1;border-bottom:1px dotted rgba(245,244,240,.18);transform:translateY(-4px)",
-                          )}
+                          style={{
+                            ...s(
+                              "position:absolute;left:0;top:0;bottom:0;transition:background .3s",
+                            ),
+                            width: `${v}%`,
+                            background: on ? ORANGE : "rgba(245,244,240,.5)",
+                          }}
                         ></span>
-                        <span
-                          style={s(
-                            `font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:21px;line-height:1;color:${it.col};min-width:18px;text-align:right`,
-                          )}
-                        >
-                          {it.r}
-                        </span>
-                      </div>
-                    </Fragment>
-                  ))}
-                </div>
-              </Fragment>
-            ))}
+                      </span>
+                      <span style={s(`${mono}font-size:10px;color:${col};text-align:right`)}>
+                        {v}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div
+                style={s(
+                  "margin-top:16px;padding-top:12px;border-top:1px solid rgba(245,244,240,.14);display:flex;flex-direction:column;gap:6px",
+                )}
+              >
+                <span
+                  style={s(
+                    `${mono}font-size:8.5px;letter-spacing:.24em;color:rgba(245,244,240,.45)`,
+                  )}
+                >
+                  EQUIPPED
+                </span>
+                <span
+                  aria-hidden="true"
+                  style={{
+                    ...s(
+                      `${mono}font-size:11px;letter-spacing:.12em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis`,
+                    ),
+                    color: hi ? ORANGE : "rgba(245,244,240,.5)",
+                  }}
+                >
+                  {hi ? `● ${hi.name.toUpperCase()} — RANK ${RANKS[hi.w]}` : "NONE — HOVER A SKILL"}
+                </span>
+              </div>
+              <div
+                style={s(
+                  `margin-top:12px;display:flex;justify-content:space-between;${mono}font-size:8px;letter-spacing:.22em;color:rgba(245,244,240,.35)`,
+                )}
+              >
+                <span>NO. 001 / 001</span>
+                <span lang="ja" style={s("font-family:'Noto Serif JP',serif")}>
+                  能力カード
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal style={s("display:flex;flex-direction:column;gap:22px")}>
+          <div style={s("display:flex;flex-wrap:wrap;gap:8px")}>
+            {LBLS.map((label, gi) => {
+              const on = tree === gi;
+              return (
+                <button
+                  key={label}
+                  type="button"
+                  aria-pressed={on}
+                  onClick={() => pickTree(gi)}
+                  style={{
+                    ...s(
+                      `display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;${mono}font-size:9.5px;letter-spacing:.2em;transition:background .25s,color .25s,border-color .25s`,
+                    ),
+                    background: on ? ORANGE : "transparent",
+                    color: on ? "#0A0A0A" : "rgba(245,244,240,.7)",
+                    border: `1px solid ${on ? ORANGE : "rgba(245,244,240,.25)"}`,
+                  }}
+                >
+                  {label}
+                  <span style={s("opacity:.6")}>
+                    {String(SKILLS.filter((sk) => sk[1] === gi).length).padStart(2, "0")}
+                  </span>
+                </button>
+              );
+            })}
           </div>
           <div
             style={s(
-              "border-top:1px solid rgba(245,244,240,.12);padding-top:14px;font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.2em;color:rgba(245,244,240,.35)",
+              "display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(245,244,240,.14);padding-bottom:14px",
             )}
           >
-            28 TOOLS · RANKED S → C — SELF-ASSESSED, HARSHLY. S = SHIPS WEEKLY.
+            <div
+              style={s(
+                `${serif}font-style:italic;font-weight:500;font-size:clamp(30px,3.4vw,42px);line-height:1;color:#F5F4F0`,
+              )}
+            >
+              {TREE_NAMES[tree]}
+              <span
+                lang="ja"
+                style={s(
+                  `font-family:'Noto Serif JP',serif;font-style:normal;font-size:.6em;color:${ORANGE};margin-left:6px`,
+                )}
+              >
+                {TREE_KANJI[tree]}
+              </span>
+            </div>
+            <span
+              style={s(`${mono}font-size:9px;letter-spacing:.22em;color:rgba(245,244,240,.45)`)}
+            >
+              SKILL TREE
+            </span>
+          </div>
+          <ul
+            style={s(
+              "display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:10px;list-style:none;margin:0;padding:0",
+            )}
+          >
+            {skills.map(([name, , w]) => (
+              <li
+                key={name}
+                className="skill-tile"
+                onMouseEnter={() => setHi({ name, w })}
+                onMouseLeave={() => setHi(null)}
+                style={s(
+                  "position:relative;border:1px solid rgba(245,244,240,.16);background:#111010;padding:14px 14px 12px;display:flex;flex-direction:column;gap:12px;cursor:default;transition:border-color .25s,transform .3s cubic-bezier(.22,.61,.36,1),background .25s",
+                )}
+              >
+                <div
+                  style={s(
+                    "display:flex;justify-content:space-between;align-items:flex-start;gap:10px",
+                  )}
+                >
+                  <span
+                    style={s(
+                      `${serif}font-weight:600;font-size:21px;line-height:1.1;color:#F5F4F0;overflow-wrap:anywhere`,
+                    )}
+                  >
+                    {name}
+                  </span>
+                  <span
+                    role="img"
+                    aria-label={`Rank ${RANKS[w]}`}
+                    style={{
+                      ...s(
+                        `width:26px;height:26px;flex:none;display:flex;align-items:center;justify-content:center;${serif}font-weight:700;font-size:15px;transform:rotate(-6deg)`,
+                      ),
+                      border: `1.5px solid ${rankColor(w)}`,
+                      color: rankColor(w),
+                    }}
+                  >
+                    {RANKS[w]}
+                  </span>
+                </div>
+                <div
+                  aria-hidden="true"
+                  style={s("display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px")}
+                >
+                  {[1, 2, 3, 4].map((k) => (
+                    <div
+                      key={k}
+                      style={{
+                        height: 5,
+                        background:
+                          k <= w ? (w === 4 ? ORANGE : "#F5F4F0") : "rgba(245,244,240,.12)",
+                      }}
+                    ></div>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div
+            style={s(
+              `border-top:1px solid rgba(245,244,240,.12);padding-top:14px;${mono}font-size:9.5px;letter-spacing:.2em;color:rgba(245,244,240,.4)`,
+            )}
+          >
+            RANK S → C · SELF-ASSESSED, HARSHLY · S = USED WEEKLY IN PRODUCTION
           </div>
         </div>
       </div>
