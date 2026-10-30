@@ -307,3 +307,137 @@ body:has(dialog[open]) {
     left: 100%;
   }
 }
+
+/* Nav: below 1100px the bar keeps logo + music + MENU; everything else lives in the panel */
+.nav-menu-btn,
+.nav-panel {
+  display: none;
+}
+.nav-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  gap: 22px;
+  padding: 8px clamp(20px, 4vw, 44px) 26px;
+  background: #0a0a0a;
+  border-bottom: 1px solid rgba(245, 244, 240, 0.12);
+  max-height: calc(100dvh - 62px);
+  overflow-y: auto;
+}
+@media (max-width: 1100px) {
+  .nav-links,
+  .nav-hide-sm {
+    display: none !important;
+  }
+  .nav-menu-btn {
+    display: flex;
+  }
+  nav[data-open="true"] .nav-panel {
+    display: flex;
+  }
+}
+
+/* Hero: trim the editor chrome on phones so the name never sits under a chip or off the card */
+@media (max-width: 700px) {
+  .hero-chip-r {
+    display: none !important;
+  }
+  .hero-grid {
+    grid-template-columns: 30px 1fr !important;
+  }
+}
+@media (max-width: 560px) {
+  .hero-hide-xs {
+    display: none !important;
+  }
+  .hero-statusbar {
+    padding: 0 12px !important;
+  }
+}
+
+/* Phones and touch screens */
+@media (max-width: 560px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+/* Grow the tap area of small links and buttons without moving anything (the card title button already
+   stretches over its whole card). */
+@media (pointer: coarse), (max-width: 700px) {
+  main a[href],
+  main button:not(.card-open) {
+    position: relative;
+  }
+  main a[href]::after,
+  main button:not(.card-open)::after {
+    content: "";
+    position: absolute;
+    inset: -12px -5px;
+  }
+}
+
+/* Phone polish */
+@media (max-width: 700px) {
+  .hero-chip-b,
+  .hero-scroll,
+  .about-deco {
+    display: none !important;
+  }
+  /* Tiny mono labels (under 10px) are hard to read on a phone; s() reads this variable */
+  :root {
+    --label-min: 10.5px;
+  }
+}
+@media (max-width: 560px) {
+  .skill-name {
+    font-size: 17px !important;
+  }
+  .skill-rank {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 13px !important;
+  }
+  .stat-btn {
+    grid-template-columns: 96px minmax(0, 1fr) 28px !important;
+  }
+  /* Project cards fill the visible scroll window instead of poking out of it */
+  .scroll-card {
+    width: 100% !important;
+    padding: 28px 18px 24px !important;
+    gap: 14px !important;
+  }
+  /* Anime board: swipe sideways instead of five tall cards stacked */
+  .anime-board {
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-top: 44px !important;
+    scrollbar-width: none;
+  }
+  .anime-board::-webkit-scrollbar {
+    display: none;
+  }
+  .anime-card {
+    flex: 0 0 82% !important;
+    max-width: none !important;
+    scroll-snap-align: center;
+  }
+}
+
+/* Mobile nav: bigger touch targets (the main-content tap-area rule does not reach the nav) */
+@media (max-width: 1100px) {
+  .nav-disc {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .nav-logo {
+    padding: 10px 8px;
+    margin-left: -8px;
+  }
+  .nav-menu-btn {
+    padding: 13px 16px !important;
+  }
+}

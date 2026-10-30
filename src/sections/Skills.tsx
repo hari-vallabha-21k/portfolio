@@ -165,6 +165,7 @@ export default function Skills() {
                       key={label}
                       type="button"
                       aria-pressed={on}
+                      className="stat-btn"
                       onClick={() => pickTree(gi)}
                       style={s(
                         "display:grid;grid-template-columns:78px minmax(0,1fr) 26px;gap:10px;align-items:center;cursor:pointer;background:none;border:0;padding:0;color:inherit;text-align:left",
@@ -292,6 +293,7 @@ export default function Skills() {
             </span>
           </div>
           <ul
+            className="skills-grid"
             style={s(
               "display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:10px;list-style:none;margin:0;padding:0",
             )}
@@ -313,13 +315,15 @@ export default function Skills() {
                 >
                   <span
                     style={s(
-                      `${serif}font-weight:600;font-size:21px;line-height:1.1;color:#F5F4F0;overflow-wrap:anywhere`,
+                      `${serif}font-weight:600;font-size:21px;line-height:1.1;color:#F5F4F0;overflow-wrap:break-word`,
                     )}
+                    className="skill-name"
                   >
                     {name}
                   </span>
                   <span
                     role="img"
+                    className="skill-rank"
                     aria-label={`Rank ${RANKS[w]}`}
                     style={{
                       ...s(

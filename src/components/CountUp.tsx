@@ -24,10 +24,13 @@ export default function CountUp({ to, decimals = 0, prefix = "", suffix = "" }: 
       return;
     }
     let raf = 0;
+    let fallback = 0;
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries[0]?.isIntersecting) return;
         io.disconnect();
+        // Safety net: a throttled or hidden tab never runs rAF, so land on the real number regardless.
+        fallback = window.setTimeout(() => setValue(to), 1800);
         const t0 = performance.now();
         const step = (now: number) => {
           const p = Math.min(1, (now - t0) / 1400);
@@ -42,6 +45,7 @@ export default function CountUp({ to, decimals = 0, prefix = "", suffix = "" }: 
     return () => {
       io.disconnect();
       cancelAnimationFrame(raf);
+      window.clearTimeout(fallback);
     };
   }, [to]);
 

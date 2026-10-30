@@ -1,3 +1,4 @@
+import { LINKEDIN_URL } from "../data/misc";
 import { s } from "../lib/css";
 
 export default function Contact() {
@@ -80,16 +81,18 @@ export default function Contact() {
           >
             GitHub ↗
           </a>
-          <a
-            // biome-ignore lint/a11y/useValidAnchor: placeholder until the real LinkedIn URL is supplied
-            href="#"
-            title="Drop your LinkedIn URL here"
-            style={s(
-              "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,244,240,.6)",
-            )}
-          >
-            LinkedIn ↗
-          </a>
+          {LINKEDIN_URL && (
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={s(
+                "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,244,240,.6)",
+              )}
+            >
+              LinkedIn ↗
+            </a>
+          )}
           <a
             href="/resume.pdf"
             download="Hari-Vallabha-Resume.pdf"

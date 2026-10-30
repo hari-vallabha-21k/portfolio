@@ -88,6 +88,7 @@ export default function Hero() {
           </div>
         </div>
         <div
+          className="hero-chip-r"
           style={s(
             "position:absolute;top:31%;right:-14px;z-index:7;will-change:transform;animation:fadeUp .8s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--boot,2.45s) + .85s)",
           )}
@@ -114,6 +115,7 @@ export default function Hero() {
           </div>
         </div>
         <div
+          className="hero-chip-b"
           style={s(
             "position:absolute;bottom:-24px;left:5%;z-index:7;will-change:transform;animation:fadeUp .8s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--boot,2.45s) + 1s)",
           )}
@@ -187,7 +189,7 @@ export default function Hero() {
               MAIN ✓
             </div>
           </div>
-          <div style={s("display:grid;grid-template-columns:52px 1fr")}>
+          <div className="hero-grid" style={s("display:grid;grid-template-columns:52px 1fr")}>
             <div
               style={s(
                 "border-right:1px solid rgba(var(--ink),.12);padding:24px 0;font-family:'DM Mono',ui-monospace,monospace;font-size:10.5px;line-height:2.4;color:rgba(var(--ink),.3);text-align:center;user-select:none",
@@ -419,12 +421,15 @@ export default function Hero() {
             </div>
           </div>
           <div
+            className="hero-statusbar"
             style={s(
               "display:flex;align-items:center;justify-content:space-between;gap:16px;height:40px;border-top:1px solid rgba(var(--ink),.14);padding:0 18px;font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em;color:rgba(var(--ink),.5);overflow:hidden",
             )}
           >
             <span style={s("white-space:nowrap")}>MAIN ✓ · UTF-8</span>
-            <span style={s("white-space:nowrap")}>LN 42, COL 7</span>
+            <span className="hero-hide-xs" style={s("white-space:nowrap")}>
+              LN 42, COL 7
+            </span>
             <span style={s("display:flex;align-items:center;gap:8px;white-space:nowrap")}>
               <span
                 style={s(
@@ -463,6 +468,7 @@ export default function Hero() {
         </div>
       </div>
       <div
+        className="hero-scroll"
         style={s(
           "position:absolute;right:clamp(24px,5vw,72px);bottom:44px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:12px",
         )}

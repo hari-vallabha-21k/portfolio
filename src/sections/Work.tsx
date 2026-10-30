@@ -5,7 +5,7 @@ import { s } from "../lib/css";
 
 const KANJI = ["一", "二", "三", "四", "五", "六", "七", "八", "九"];
 const WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-const COUNT = WORDS[PROJECTS.length];
+const COUNT = WORDS[PROJECTS.length] ?? String(PROJECTS.length);
 const mono = "font-family:'DM Mono',ui-monospace,monospace;";
 const serif = "font-family:'Cormorant Garamond',Georgia,serif;";
 const roller = "position:absolute;z-index:3;top:-16px;bottom:-16px;width:30px;pointer-events:none";
@@ -77,7 +77,8 @@ export default function Work() {
     return () => io.disconnect();
   }, []);
 
-  // Mouse drag to scroll, and vertical wheel -> horizontal scroll while the track can still move.
+  // Mouse drag to scroll. The wheel is left alone so the page never gets trapped over the track;
+  // trackpads, shift+wheel, the arrows and the keyboard scroll it sideways natively.
   useEffect(() => {
     const el = track.current;
     if (!el) return;
@@ -92,6 +93,7 @@ export default function Work() {
       startLeft = el.scrollLeft;
       el.style.scrollSnapType = "none";
       el.style.cursor = "grabbing";
+      el.style.userSelect = "none";
     };
     const onMove = (e: PointerEvent) => {
       if (!down) return;
@@ -104,27 +106,20 @@ export default function Work() {
       down = false;
       el.style.scrollSnapType = "x mandatory";
       el.style.cursor = "grab";
+      el.style.userSelect = "";
       setTimeout(() => {
         dragged.current = false;
       }, 0);
     };
-    const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-      const max = el.scrollWidth - el.clientWidth;
-      if ((e.deltaY > 0 && el.scrollLeft < max - 2) || (e.deltaY < 0 && el.scrollLeft > 2)) {
-        e.preventDefault();
-        el.scrollLeft += e.deltaY;
-      }
-    };
     el.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
-    el.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("pointercancel", onUp);
     return () => {
       el.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
-      el.removeEventListener("wheel", onWheel);
+      window.removeEventListener("pointercancel", onUp);
     };
   }, []);
 
@@ -272,7 +267,7 @@ export default function Work() {
                       "font-family:'Noto Serif JP',serif;font-weight:700;font-size:30px;writing-mode:vertical-rl;letter-spacing:.12em;color:#1E1A14",
                     )}
                   >
-                    第{KANJI[i]}話
+                    第{KANJI[i] ?? i + 1}話
                   </div>
                   <div style={s("width:1px;flex:1;background:rgba(30,26,20,.25)")} />
                   <div
@@ -362,7 +357,7 @@ export default function Work() {
                   </div>
                   <div
                     style={s(
-                      "margin-top:auto;padding-top:12px;border-top:1px solid rgba(30,26,20,.2);display:flex;justify-content:space-between;align-items:center;gap:10px",
+                      "margin-top:auto;padding-top:12px;border-top:1px solid rgba(30,26,20,.2);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 10px",
                     )}
                   >
                     <span

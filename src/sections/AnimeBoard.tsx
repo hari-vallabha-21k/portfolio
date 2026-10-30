@@ -50,6 +50,7 @@ export default function AnimeBoard() {
           </div>
         </div>
         <div
+          className="anime-board"
           style={s(
             "position:relative;border:1px solid rgba(var(--ink),.15);background:var(--paper2);background-image:radial-gradient(var(--dot) 1px, transparent 1px);background-size:20px 20px;padding:clamp(30px,4vw,48px) clamp(20px,4vw,48px) clamp(28px,4vw,44px);display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,36px);justify-content:center",
           )}
@@ -77,7 +78,7 @@ export default function AnimeBoard() {
                 style={s(
                   `position:relative;flex:1 1 250px;max-width:340px;background:var(--card);border:1px solid rgba(var(--ink),.16);box-shadow:0 22px 44px -28px rgba(10,10,10,.4);padding:28px 22px 16px;cursor:pointer;transform:${a.rot};transition:transform .4s cubic-bezier(.22,.61,.36,1),box-shadow .4s,border-color .4s`,
                 )}
-                className="hv11"
+                className="hv11 anime-card"
               >
                 <div
                   style={s(

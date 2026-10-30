@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ACCENTS } from "../data/misc";
 import { useAudio } from "../hooks/useAudio";
 import { useScrollState } from "../hooks/useScrollState";
@@ -15,18 +15,104 @@ const LINKS = ["about", "skills", "journey", "work", "data", "contact"] as const
 const mono = "font-family:'DM Mono',ui-monospace,monospace;";
 const ctl = `${mono}background:transparent;border:1px solid rgba(245,244,240,.25);padding:7px 12px;cursor:pointer;font-size:9px;letter-spacing:.22em;color:rgba(245,244,240,.7)`;
 
+/**
+ * Wide screens: logo, section links and all controls in one bar.
+ * Below 1100px (see .nav-* in index.css) the bar keeps the logo, the music disc and a MENU button;
+ * the links, game, accent, theme and clock move into a dropdown panel with larger touch targets.
+ */
 export default function Nav() {
   const { dark, toggle, accent, setAccent } = useTheme();
   const { progress, showTop, active } = useScrollState();
   const audio = useAudio();
   const [menu, setMenu] = useState(false);
+  const [open, setOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
   const groupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const gameButton = (className: string, extra = "") => (
+    <button
+      type="button"
+      className={className}
+      aria-label="Play the mini-game"
+      onClick={() => {
+        setOpen(false);
+        setGameOpen(true);
+      }}
+      style={s(`${ctl};display:flex;align-items:center;gap:7px;${extra}`)}
+    >
+      ▶ GAME
+    </button>
+  );
+  const swatches = (className: string, size: number) => (
+    // biome-ignore lint/a11y/useSemanticElements: a fieldset would add default border/padding to the nav
+    <div
+      role="group"
+      aria-label="Accent colour"
+      className={className}
+      style={s("display:flex;align-items:center;gap:6px")}
+    >
+      {ACCENTS.map((c) => (
+        <button
+          type="button"
+          key={c}
+          aria-label={`Accent colour: ${ACCENT_NAMES[c]}`}
+          aria-pressed={accent === c}
+          onClick={() => setAccent(c)}
+          style={{
+            ...s(
+              "border-radius:50%;padding:0;cursor:pointer;border:1px solid rgba(245,244,240,.4);outline-offset:2px",
+            ),
+            width: size,
+            height: size,
+            background: c,
+            outline: accent === c ? "1.5px solid #F5F4F0" : "none",
+          }}
+        />
+      ))}
+    </div>
+  );
+  const themeButton = (className: string, extra = "") => (
+    <button
+      type="button"
+      className={className}
+      aria-label={`Switch to ${dark ? "light" : "dark"} theme`}
+      onClick={toggle}
+      style={s(`${ctl};display:flex;align-items:center;gap:8px;${extra}`)}
+    >
+      <span
+        style={s(
+          `width:10px;height:10px;border-radius:50%;border:1.5px solid #F4874B;background:${dark ? "#F4874B" : "transparent"};transition:background .3s`,
+        )}
+      />
+      {dark ? "DARK" : "LIGHT"}
+    </button>
+  );
+  const clock = (className: string) => (
+    <div
+      className={className}
+      style={s(
+        `${mono}font-size:10px;letter-spacing:.22em;color:rgba(245,244,240,.5);text-transform:uppercase;white-space:nowrap`,
+      )}
+    >
+      HYD, IN — IST
+    </div>
+  );
+  const touch = "padding:13px 18px;font-size:10px";
 
   return (
     <>
       <nav
         aria-label="Primary"
+        data-open={open}
         style={s(
           "position:fixed;top:0;left:0;right:0;height:62px;background:#0A0A0A;color:#F5F4F0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,4vw,44px);z-index:60;border-bottom:1px solid rgba(245,244,240,.08)",
         )}
@@ -34,6 +120,7 @@ export default function Nav() {
         <a
           href="#hero"
           aria-label="Home"
+          className="nav-logo"
           style={s(
             "font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;font-size:27px;color:#F5F4F0",
           )}
@@ -41,6 +128,7 @@ export default function Nav() {
           hv<span style={s("color:var(--accent,#C93A1A)")}>.</span>
         </a>
         <div
+          className="nav-links"
           style={s("display:flex;gap:clamp(14px,2.8vw,36px);flex-wrap:wrap;justify-content:center")}
         >
           {LINKS.map((id) => (
@@ -72,7 +160,7 @@ export default function Nav() {
           >
             <button
               type="button"
-              className="nav-btn"
+              className="nav-btn nav-disc"
               aria-label="Play / pause lo-fi music"
               aria-pressed={audio.on}
               onClick={audio.toggle}
@@ -103,55 +191,43 @@ export default function Nav() {
               {audio.on ? "NOW SPINNING" : "PLAY"} — LO-FI LOOP · SIDE A
             </div>
           </div>
+          {gameButton("nav-btn nav-hide-sm")}
+          {swatches("nav-hide-sm", 12)}
+          {themeButton("nav-btn nav-hide-sm")}
+          {clock("nav-hide-sm")}
           <button
             type="button"
-            className="nav-btn"
-            aria-label="Play the mini-game"
-            onClick={() => setGameOpen(true)}
-            style={s(`${ctl};display:flex;align-items:center;gap:7px`)}
+            className="nav-btn nav-menu-btn"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="nav-panel"
+            onClick={() => setOpen((o) => !o)}
+            style={s(`${ctl};align-items:center;gap:8px;padding:10px 14px`)}
           >
-            ▶ GAME
+            {open ? "CLOSE" : "MENU"}
           </button>
-          {/* biome-ignore lint/a11y/useSemanticElements: a fieldset would add default border/padding to the nav */}
-          <div
-            role="group"
-            aria-label="Accent colour"
-            style={s("display:flex;align-items:center;gap:6px")}
-          >
-            {ACCENTS.map((c) => (
-              <button
-                type="button"
-                key={c}
-                aria-label={`Accent colour: ${ACCENT_NAMES[c]}`}
-                aria-pressed={accent === c}
-                onClick={() => setAccent(c)}
+        </div>
+        <div id="nav-panel" className="nav-panel">
+          <div style={s("display:flex;flex-direction:column")}>
+            {LINKS.map((id) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={() => setOpen(false)}
                 style={s(
-                  `width:12px;height:12px;border-radius:50%;padding:0;cursor:pointer;background:${c};border:1px solid rgba(245,244,240,.4);outline:${accent === c ? "1.5px solid #F5F4F0" : "none"};outline-offset:2px`,
+                  `${mono}font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:${active === id ? "#F4874B" : "rgba(245,244,240,.8)"};padding:15px 0;border-bottom:1px solid rgba(245,244,240,.08)`,
                 )}
-              />
+              >
+                {id}
+              </a>
             ))}
           </div>
-          <button
-            type="button"
-            className="nav-btn"
-            aria-label={`Switch to ${dark ? "light" : "dark"} theme`}
-            onClick={toggle}
-            style={s(`${ctl};display:flex;align-items:center;gap:8px`)}
-          >
-            <span
-              style={s(
-                `width:10px;height:10px;border-radius:50%;border:1.5px solid #F4874B;background:${dark ? "#F4874B" : "transparent"};transition:background .3s`,
-              )}
-            />
-            {dark ? "DARK" : "LIGHT"}
-          </button>
-          <div
-            style={s(
-              `${mono}font-size:10px;letter-spacing:.22em;color:rgba(245,244,240,.5);text-transform:uppercase;white-space:nowrap`,
-            )}
-          >
-            HYD, IN — IST
+          <div style={s("display:flex;flex-wrap:wrap;align-items:center;gap:16px")}>
+            {gameButton("nav-btn", touch)}
+            {swatches("", 26)}
+            {themeButton("nav-btn", touch)}
           </div>
+          {clock("")}
         </div>
         <div
           aria-hidden="true"

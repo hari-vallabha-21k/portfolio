@@ -40,6 +40,10 @@ export function s(css: string): CSSProperties {
           .replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
     style[key] = val;
   }
+  // Tiny mono labels (< 10px) read as `max(size, var(--label-min))` so phones can lift them all
+  // by setting --label-min in one place (see index.css) instead of overriding each element.
+  const px = /^(\d+(?:\.\d+)?)px$/.exec(style.fontSize ?? "");
+  if (px && Number(px[1]) < 10) style.fontSize = `max(${style.fontSize}, var(--label-min, 0px))`;
   cache.set(css, style);
   return style;
 }

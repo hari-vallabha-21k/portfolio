@@ -3,6 +3,9 @@ export const EASE = "cubic-bezier(.22,.61,.36,1)";
 /** Current model-drift PSI shown in the hero chip, the Data Room card and the ML Monitoring card. */
 export const PSI_DRIFT = 0.05;
 
+/** Set this to the LinkedIn profile URL to show the link in Contact; empty hides it. */
+export const LINKEDIN_URL = "https://www.linkedin.com/in/harii-vallabha-4892602a5/";
+
 export const SQL_TEXT =
   "SELECT lang, COUNT(*) AS queries,\n       ROUND(AVG(resolution_s), 1) AS avg_s\nFROM   assistant_logs\nWHERE  ts > now() - interval '90 days'\nGROUP  BY lang ORDER BY 2 DESC;\n\n lang | queries | avg_s\n------+---------+-------\n EN   |   7,412 | 168.4\n HI   |   3,458 | 181.2\n TE   |   1,904 | 176.9\n(3 rows · 41 ms)";
 

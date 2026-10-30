@@ -17,7 +17,7 @@ export default function About() {
         02
       </div>
       <div style={s("display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,90px);align-items:flex-start")}>
-        <div data-reveal style={s("flex:1 1 320px;max-width:430px;position:relative")}>
+        <div data-reveal style={s("flex:1 1 min(320px,100%);max-width:430px;position:relative")}>
           <div
             style={s(
               "position:relative;height:480px;border-radius:2px;overflow:hidden;background:#16130f",
@@ -72,7 +72,7 @@ export default function About() {
             <span>Portfolio — 2026</span>
           </div>
         </div>
-        <div style={s("flex:1.4 1 380px;padding-top:16px")}>
+        <div style={s("flex:1.4 1 min(380px,100%);padding-top:16px")}>
           <div
             data-reveal
             style={s(
@@ -94,7 +94,7 @@ export default function About() {
           <div
             data-reveal
             style={s(
-              "display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;max-width:640px",
+              "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:40px;max-width:640px",
             )}
           >
             <div>
@@ -138,6 +138,7 @@ export default function About() {
         </div>
       </div>
       <div
+        className="about-deco"
         style={s(
           "position:absolute;right:30px;bottom:48px;writing-mode:vertical-rl;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:58px;color:rgba(var(--ink),.14);pointer-events:none",
         )}
