@@ -89,23 +89,36 @@ export default function ProjectDialog({ index, onChange, onClose }: Props) {
         </p>
         <div
           style={s(
-            `position:relative;height:130px;border-radius:2px;overflow:hidden;margin:32px 0;background:${cp.artBg}`,
+            `position:relative;height:${cp.image ? "clamp(220px,34vw,380px)" : "130px"};border-radius:2px;overflow:hidden;margin:32px 0;background:${cp.artBg}`,
           )}
         >
-          <svg
-            aria-hidden="true"
-            viewBox={"0 0 120 40"}
-            style={s("position:absolute;left:26px;bottom:20px;width:200px;overflow:visible")}
-          >
-            <path
-              d={cp.spark}
-              fill="none"
-              stroke="#F4874B"
-              strokeWidth={"2.5"}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
+          {cp.image && (
+            <img
+              src={cp.image}
+              alt={cp.imageAlt ?? `${cp.title} screenshot`}
+              loading="lazy"
+              decoding="async"
+              style={s(
+                "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center",
+              )}
+            />
+          )}
+          {!cp.image && (
+            <svg
+              aria-hidden="true"
+              viewBox={"0 0 120 40"}
+              style={s("position:absolute;left:26px;bottom:20px;width:200px;overflow:visible")}
+            >
+              <path
+                d={cp.spark}
+                fill="none"
+                stroke="#F4874B"
+                strokeWidth={"2.5"}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></path>
+            </svg>
+          )}
           <div
             style={s(
               "position:absolute;right:22px;bottom:20px;font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em;color:rgba(245,244,240,.85);background:rgba(245,244,240,.1);border:1px solid rgba(245,244,240,.18);padding:7px 11px",
@@ -158,30 +171,33 @@ export default function ProjectDialog({ index, onChange, onClose }: Props) {
               ))}
             </div>
           </div>
-          <div>
-            <div
-              style={s(
-                "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.28em;color:rgba(var(--ink),.45);margin-bottom:10px",
-              )}
-            >
-              LINKS
+          {cp.links.length > 0 && (
+            <div>
+              <div
+                style={s(
+                  "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.28em;color:rgba(var(--ink),.45);margin-bottom:10px",
+                )}
+              >
+                LINKS
+              </div>
+              <div style={s("display:flex;flex-direction:column;gap:8px")}>
+                {cp.links.map((l) => (
+                  <Fragment key={l.label}>
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={s(
+                        "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#C93A1A)",
+                      )}
+                    >
+                      {l.label} ↗
+                    </a>
+                  </Fragment>
+                ))}
+              </div>
             </div>
-            <div style={s("display:flex;flex-direction:column;gap:8px")}>
-              {cp.links.map((l) => (
-                <Fragment key={l.label}>
-                  <a
-                    href={l.href}
-                    title="Drop your real link here"
-                    style={s(
-                      "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#C93A1A)",
-                    )}
-                  >
-                    {l.label} ↗
-                  </a>
-                </Fragment>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
         <div style={s("margin-top:34px")}>
           {cp.points.map((pt) => (

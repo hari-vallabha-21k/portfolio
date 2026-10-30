@@ -236,7 +236,7 @@ export default function Stack() {
                   "font-family:'DM Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.18em;color:var(--accent,#C93A1A)",
                 )}
               >
-                PROGRESS TRACKER ↗
+                PROJECTPLUSE ↗
               </a>
             </div>
           </div>

@@ -71,9 +71,9 @@ export default function Contact() {
         </div>
         <div data-reveal style={s("display:flex;flex-wrap:wrap;gap:30px;margin-top:64px")}>
           <a
-            // biome-ignore lint/a11y/useValidAnchor: placeholder until the real GitHub URL is supplied
-            href="#"
-            title="Drop your GitHub URL here"
+            href="https://github.com/hari-vallabha-21k"
+            target="_blank"
+            rel="noopener noreferrer"
             style={s(
               "font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,244,240,.6)",
             )}
