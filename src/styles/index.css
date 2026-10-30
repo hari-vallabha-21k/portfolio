@@ -36,27 +36,179 @@
   --ease-site: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    line-height: normal;
+  }
+
+  body {
+    line-height: normal;
+    font-family: var(--font-sans);
+    background: var(--paper);
+    color: rgb(var(--ink));
+    overflow-x: hidden;
+    transition:
+      background-color 0.45s ease,
+      color 0.45s ease;
+  }
+
+  ::selection {
+    background: rgb(var(--ink));
+    color: var(--paper);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  a:hover {
+    color: var(--accent, #c93a1a);
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+/* Loader isn't ported yet (Phase 4): entrance animations use the "loader off" delay. */
 body {
-  font-family: var(--font-sans);
-  background: var(--paper);
-  color: rgb(var(--ink));
-  overflow-x: hidden;
-  transition:
-    background-color 0.45s ease,
-    color 0.45s ease;
+  --boot: 0.2s;
 }
 
-::selection {
-  background: rgb(var(--ink));
-  color: var(--paper);
+@keyframes wordUp {
+  from {
+    transform: translateY(112%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(-7px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes scrollLine {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* Scroll reveal (toggled by useInView) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.85s ease,
+    transform 0.85s var(--ease-site);
+}
+[data-reveal][data-in] {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Radar outline draw + fill fade (SVG polygons use pathLength="1") */
+[data-draw] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.7s var(--ease-site) 0.2s;
+}
+[data-draw][data-in] {
+  stroke-dashoffset: 0;
+}
+[data-fade] {
+  opacity: 0;
+  transition: opacity 1.2s ease 1s;
+}
+[data-fade][data-in] {
+  opacity: 1;
+}
+[data-line][data-in] {
+  transform: scaleX(1) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-line] {
+    transform: scaleX(1) !important;
+  }
+  [data-reveal],
+  [data-fade] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  [data-draw] {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
 }

@@ -1,0 +1,113 @@
+/* Generated from the old page's style-hover attributes */
+.hv1:hover,
+.hv1:focus-visible {
+  transform: translateY(-0.08em) rotate(-2.5deg) !important;
+  color: var(--accent, #c93a1a) !important;
+}
+.hv2:hover,
+.hv2:focus-visible {
+  transform: translateY(-0.08em) rotate(2deg) !important;
+  color: var(--accent, #c93a1a) !important;
+}
+.hv3:hover,
+.hv3:focus-visible {
+  transform: translateY(-0.08em) rotate(-2deg) !important;
+  color: var(--accent, #c93a1a) !important;
+}
+.hv4:hover,
+.hv4:focus-visible {
+  transform: translateY(-0.08em) rotate(2.5deg) !important;
+  color: var(--accent, #c93a1a) !important;
+}
+.hv5:hover,
+.hv5:focus-visible {
+  transform: translateY(-0.08em) rotate(-2deg) !important;
+  color: var(--accent, #c93a1a) !important;
+}
+.hv6:hover,
+.hv6:focus-visible {
+  transform: translateY(-0.08em) !important;
+  color: rgba(var(--ink), 1) !important;
+}
+.hv7:hover,
+.hv7:focus-visible {
+  transform: translateY(-0.08em) rotate(2deg) !important;
+  color: var(--accent, #c93a1a) !important;
+}
+.hv8:hover,
+.hv8:focus-visible {
+  transform: translateY(-0.08em) rotate(-2.5deg) !important;
+  color: var(--accent, #c93a1a) !important;
+}
+.hv9:hover,
+.hv9:focus-visible {
+  background: rgba(var(--ink), 1) !important;
+  color: var(--paper) !important;
+}
+.hv10:hover,
+.hv10:focus-visible {
+  border-color: rgba(var(--ink), 1) !important;
+  background: rgba(var(--ink), 0.05) !important;
+}
+.hv11:hover,
+.hv11:focus-visible {
+  transform: rotate(0deg) translateY(-8px) !important;
+  box-shadow: 0 34px 60px -30px rgba(10, 10, 10, 0.5) !important;
+  border-color: var(--accent, #c93a1a) !important;
+}
+.hv12:hover,
+.hv12:focus-visible {
+  background: rgba(244, 135, 75, 0.06) !important;
+}
+.hv13:hover,
+.hv13:focus-visible {
+  background: rgba(var(--ink), 0.03) !important;
+}
+.hv14:hover,
+.hv14:focus-visible {
+  background: rgba(var(--ink), 0.03) !important;
+}
+.hv15:hover,
+.hv15:focus-visible {
+  background: rgba(var(--ink), 0.03) !important;
+}
+.hv16:hover,
+.hv16:focus-visible {
+  background: rgba(var(--ink), 0.03) !important;
+}
+.hv17:hover,
+.hv17:focus-visible {
+  background: rgba(var(--ink), 0.03) !important;
+}
+.hv18:hover,
+.hv18:focus-visible {
+  color: var(--accent, #c93a1a) !important;
+}
+.hv19:hover,
+.hv19:focus-visible {
+  transform: scale(1.015) !important;
+}
+.hv20:hover,
+.hv20:focus-visible {
+  animation-play-state: paused !important;
+}
+.hv21:hover,
+.hv21:focus-visible {
+  transform: translateY(-5px) !important;
+  border-color: var(--accent, #c93a1a) !important;
+}
+.hv22:hover,
+.hv22:focus-visible {
+  transform: translateY(-5px) !important;
+  border-color: var(--accent, #c93a1a) !important;
+}
+.hv23:hover,
+.hv23:focus-visible {
+  transform: translateY(-5px) !important;
+  border-color: var(--accent, #c93a1a) !important;
+}
+.hv24:hover,
+.hv24:focus-visible {
+  background: var(--accent, #c93a1a) !important;
+  border-color: var(--accent, #c93a1a) !important;
+}
