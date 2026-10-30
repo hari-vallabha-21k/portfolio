@@ -259,11 +259,29 @@ body:has(dialog[open]) {
 .scroll-track::-webkit-scrollbar {
   display: none;
 }
-.scroll-card:hover,
-.scroll-card:focus-visible {
-  background: rgba(30, 26, 20, 0.045) !important;
+.scroll-card:hover {
+  background: rgba(30, 26, 20, 0.045);
 }
-.scroll-card:focus-visible,
+/* The title button stretches over the whole card, so the card opens its case study on click. */
+.card-open {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.card-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.card-open:focus-visible {
+  outline: none;
+}
+.card-open:focus-visible::after,
 .scroll-track:focus-visible {
   outline: 2px solid #a8301a;
   outline-offset: -4px;

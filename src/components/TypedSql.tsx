@@ -4,7 +4,8 @@ import { SQL_TEXT } from "../data/misc";
 /** Types the SQL snippet out (2 chars / 18ms) once the block is 35% visible. */
 export default function TypedSql({ style }: { style: React.CSSProperties }) {
   const ref = useRef<HTMLPreElement>(null);
-  const [n, setN] = useState(0);
+  // Starts fully typed so the block is never empty without scrolling; it retypes from the start once visible.
+  const [n, setN] = useState(SQL_TEXT.length);
 
   useEffect(() => {
     const el = ref.current;
@@ -13,7 +14,6 @@ export default function TypedSql({ style }: { style: React.CSSProperties }) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
       !("IntersectionObserver" in window)
     ) {
-      setN(SQL_TEXT.length);
       return;
     }
     let timer = 0;

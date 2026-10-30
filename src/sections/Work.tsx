@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ProjectDialog from "../components/ProjectDialog";
-import { PROJECTS } from "../data/projects";
+import { PROJECTS, type Project } from "../data/projects";
 import { s } from "../lib/css";
 
 const KANJI = ["一", "二", "三", "四", "五", "六", "七", "八", "九"];
@@ -12,6 +12,42 @@ const roller = "position:absolute;z-index:3;top:-16px;bottom:-16px;width:30px;po
 const cap =
   "position:absolute;left:-5px;right:-5px;height:14px;border-radius:7px;background:linear-gradient(90deg,#1c120a,#5a3820 45%,#24160c)";
 const arrowBtn = `${mono}width:44px;height:44px;border-radius:50%;border:1px solid rgba(var(--ink),.3);background:transparent;color:rgba(var(--ink),.85);cursor:pointer;font-size:14px;transition:background .25s,color .25s,border-color .25s`;
+
+/** Card footer action: live demo if there is one, else the repo; "Code" is added next to a live demo. */
+function CardLinks({ p, dragged }: { p: Project; dragged: { current: boolean } }) {
+  const live = p.links.find((l) => /live/i.test(l.label));
+  const repo = p.links.find((l) => /github/i.test(l.label));
+  const open = live ?? repo;
+  const linkStyle = s(`${mono}font-size:10px;letter-spacing:.2em;color:#A8301A;white-space:nowrap`);
+  if (!open) {
+    return (
+      <span aria-hidden="true" style={linkStyle}>
+        CASE STUDY →
+      </span>
+    );
+  }
+  const link = (l: { label: string; href: string }, text: string) => (
+    <a
+      href={l.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      draggable={false}
+      aria-label={`${p.title}: ${l.label} (opens in a new tab)`}
+      onClick={(e) => {
+        if (dragged.current) e.preventDefault();
+      }}
+      style={linkStyle}
+    >
+      {text}
+    </a>
+  );
+  return (
+    <span style={s("position:relative;z-index:1;display:flex;gap:14px;align-items:center")}>
+      {live && repo && link(repo, "CODE ↗")}
+      {link(open, "OPEN ↗")}
+    </span>
+  );
+}
 
 export default function Work() {
   const [open, setOpen] = useState<number | null>(null);
@@ -222,26 +258,11 @@ export default function Work() {
               </div>
             </div>
             {PROJECTS.map((p, i) => (
-              // biome-ignore lint/a11y/useSemanticElements: the whole episode is the click target; a <button> would break the grid layout
-              <div
+              <article
                 key={p.code}
-                role="button"
-                tabIndex={0}
-                aria-haspopup="dialog"
-                aria-label={`Open case study: ${p.title}`}
                 className="scroll-card"
-                onClick={() => {
-                  if (!dragged.current) setOpen(i);
-                }}
-                onKeyDown={(e) => {
-                  if (e.repeat) return;
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setOpen(i);
-                  }
-                }}
                 style={s(
-                  "flex:none;width:min(440px,82vw);scroll-snap-align:start;padding:38px 34px 32px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;border-right:1px dashed rgba(30,26,20,.3);cursor:pointer;transition:background .35s",
+                  "position:relative;flex:none;width:min(440px,82vw);scroll-snap-align:start;padding:38px 34px 32px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;border-right:1px dashed rgba(30,26,20,.3);cursor:pointer;transition:background .35s",
                 )}
               >
                 <div style={s("display:flex;flex-direction:column;align-items:center;gap:14px")}>
@@ -275,7 +296,16 @@ export default function Work() {
                       `${serif}font-weight:700;font-size:clamp(32px,3.4vw,44px);line-height:1;letter-spacing:-.01em;color:#1E1A14`,
                     )}
                   >
-                    {p.title}
+                    <button
+                      type="button"
+                      className="card-open"
+                      aria-haspopup="dialog"
+                      onClick={() => {
+                        if (!dragged.current) setOpen(i);
+                      }}
+                    >
+                      {p.title}
+                    </button>
                   </h3>
                   <p
                     style={s(
@@ -342,16 +372,10 @@ export default function Work() {
                     >
                       {p.stackStr}
                     </span>
-                    <span
-                      style={s(
-                        `${mono}font-size:10px;letter-spacing:.2em;color:#A8301A;white-space:nowrap`,
-                      )}
-                    >
-                      OPEN →
-                    </span>
+                    <CardLinks p={p} dragged={dragged} />
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
             <div
               style={s(

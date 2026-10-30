@@ -1,5 +1,6 @@
 import CountUp from "../components/CountUp";
 import TypedSql from "../components/TypedSql";
+import { PROJECTS } from "../data/projects";
 import { s } from "../lib/css";
 
 export default function DataRoom() {
@@ -51,7 +52,7 @@ export default function DataRoom() {
             "font-family:'DM Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.22em;color:rgba(245,244,240,.4);text-transform:uppercase",
           )}
         >
-          Illustrative telemetry — patterns real, data invented
+          Headline numbers from shipped work — charts below illustrative
         </div>
       </div>
       <div data-reveal style={s("display:flex;flex-wrap:wrap;gap:18px;margin:52px 0 18px")}>
@@ -105,7 +106,7 @@ export default function DataRoom() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:54px;line-height:1",
             )}
           >
-            <CountUp to={0.08} decimals={2} />
+            <CountUp to={0.05} decimals={2} />
           </div>
           <div
             style={s(
@@ -125,7 +126,7 @@ export default function DataRoom() {
               "font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:54px;line-height:1",
             )}
           >
-            <CountUp to={5} />
+            <CountUp to={PROJECTS.length} />
           </div>
           <div
             style={s(

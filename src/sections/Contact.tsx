@@ -42,7 +42,7 @@ export default function Contact() {
             "font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(19px,2vw,23px);color:rgba(245,244,240,.7);max-width:520px;margin-top:26px",
           )}
         >
-          Open to full-time roles and freelance work from June 2026 — say hi and I'll reply fast.
+          Available immediately for full-time roles and freelance work — say hi and I'll reply fast.
         </p>
         <div
           data-reveal

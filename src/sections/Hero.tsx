@@ -321,7 +321,7 @@ export default function Hero() {
                     "font-family:'DM Mono',ui-monospace,monospace;font-size:clamp(10px,1.1vw,12px);letter-spacing:.3em;color:rgba(var(--ink),.75)",
                   )}
                 >
-                  DATA ANALYST
+                  AI/ML ENGINEER
                 </span>
                 <span
                   style={s(

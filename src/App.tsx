@@ -2,6 +2,7 @@ import Loader from "./components/Loader";
 import Nav from "./components/Nav";
 import { useInView } from "./hooks/useInView";
 import About from "./sections/About";
+import AnimeBoard from "./sections/AnimeBoard";
 import Contact from "./sections/Contact";
 import DataRoom from "./sections/DataRoom";
 import Hero from "./sections/Hero";
@@ -21,6 +22,7 @@ export default function App() {
         <About />
         <Skills />
         <Journey />
+        <AnimeBoard />
         <Work />
         <DataRoom />
         <Stack />

@@ -10,7 +10,9 @@ interface Props {
 /** Counts from 0 to `to` over 1.4s the first time it is at least half visible. */
 export default function CountUp({ to, decimals = 0, prefix = "", suffix = "" }: Props) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [value, setValue] = useState(0);
+  // Starts at the final value so crawlers, screenshots and visitors who never scroll here never see 0;
+  // the count-up replays from 0 once the number scrolls into view.
+  const [value, setValue] = useState(to);
 
   useEffect(() => {
     const el = ref.current;
@@ -19,7 +21,6 @@ export default function CountUp({ to, decimals = 0, prefix = "", suffix = "" }: 
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
       !("IntersectionObserver" in window)
     ) {
-      setValue(to);
       return;
     }
     let raf = 0;
